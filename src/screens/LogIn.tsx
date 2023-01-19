@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {TouchableOpacity} from 'react-native';
 import {TextInput} from 'react-native-paper';
 import styled, {useTheme} from 'styled-components/native';
@@ -41,26 +41,40 @@ const ButtonSecondary = styled.Text`
 
 const LogIn = () => {
   const theme = useTheme();
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+
+  const handlePress = () => {
+    console.log(email, password);
+    setEmail('');
+    setPassword('');
+  };
+
   return (
     <Container>
       <Title>Login</Title>
       <SubTitle>Sign in your account to see your chat</SubTitle>
       <InputContainer>
         <TextInput
+          autoComplete="email"
+          autoFocus={true}
+          blurOnSubmit={false}
           style={{
             backgroundColor: theme.colors.primaryBackground,
           }}
           label="Email"
-          value={'as'}
-          //   onChangeText={text => setText(text)}
+          value={email}
+          onChangeText={setEmail}
           activeUnderlineColor={theme.colors.primary}
           underlineColor={theme.colors.secondary}
         />
         <TextInput
+          autoComplete="off"
+          blurOnSubmit={true}
           style={{backgroundColor: theme.colors.primaryBackground}}
           label="Password"
-          value={'as'}
-          //   outlineColor={theme.colors.primary}
+          value={password}
+          onChangeText={setEmail}
           activeUnderlineColor={theme.colors.primary}
           underlineColor={theme.colors.secondary}
 
@@ -69,7 +83,7 @@ const LogIn = () => {
       </InputContainer>
       <ButtonSecondary>Forgget your password?</ButtonSecondary>
 
-      <MainButton title={'login'} handlePress={() => console.log('clicked')} />
+      <MainButton title={'Login'} handlePress={handlePress} />
       <ViewContainer>
         <SubTitle>Do yoy have an account?</SubTitle>
         <TouchableOpacity>
