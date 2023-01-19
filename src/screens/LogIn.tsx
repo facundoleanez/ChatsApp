@@ -2,6 +2,7 @@ import React from 'react';
 import {TouchableOpacity} from 'react-native';
 import {TextInput} from 'react-native-paper';
 import styled, {useTheme} from 'styled-components/native';
+import MainButton from '../components/buttons/MainButton';
 
 //Views
 const Container = styled.View`
@@ -37,22 +38,6 @@ const ButtonSecondary = styled.Text`
   color: ${({theme}) => theme.colors.primary};
   margin: 10px;
 `;
-const H2 = styled.Text`
-  font-size: 25px;
-  color: ${({theme}) => theme.colors.primaryBackground};
-  font-weight: 500;
-`;
-//Buttons
-const ButtonSubmit = styled.TouchableOpacity`
-  font-size: 20px;
-  background-color: ${({theme}) => theme.colors.primary};
-  border-radius: 20px;
-  width: 100%;
-  align-items: center;
-  margin-top: 50px;
-  margin-bottom: 20px;
-  padding: 5px;
-`;
 
 const LogIn = () => {
   const theme = useTheme();
@@ -83,9 +68,8 @@ const LogIn = () => {
         />
       </InputContainer>
       <ButtonSecondary>Forgget your password?</ButtonSecondary>
-      <ButtonSubmit style={{elevation: 10}}>
-        <H2>LogIn</H2>
-      </ButtonSubmit>
+
+      <MainButton title={'login'} handlePress={() => console.log('clicked')} />
       <ViewContainer>
         <SubTitle>Do yoy have an account?</SubTitle>
         <TouchableOpacity>
