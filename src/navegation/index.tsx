@@ -9,6 +9,8 @@ import {useTheme} from 'styled-components/native';
 export type RootTabParamList = {
   Conversations: undefined;
   Chat: undefined;
+  Login: undefined;
+  Signup: undefined;
 };
 
 const TabNavergator = () => {

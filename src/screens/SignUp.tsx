@@ -5,6 +5,8 @@ import styled, {useTheme} from 'styled-components/native';
 import MainButton from '../components/buttons/MainButton';
 import Icons from 'react-native-vector-icons/Feather';
 import TextButton from '../components/buttons/TextButton';
+import {RootTabParamList} from '../navegation';
+import {useNavigation} from '@react-navigation/core';
 
 //Views
 const Container = styled.View`
@@ -36,18 +38,24 @@ const SubTitle = styled.Text`
   color: ${({theme}) => theme.colors.seccoindaryText};
 `;
 
-const LogIn = () => {
+const SignUp = () => {
   const theme = useTheme();
+
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [password2, setPassword2] = useState('');
   const [secureText, setSecureText] = useState(true);
 
   const inputPasswordRef = useRef<TextInput>(null);
+  const inputPassword2Ref = useRef<TextInput>(null);
+
+  const navigation = useNavigation<RootTabParamList>();
 
   const handlePress = () => {
     console.log(email, password);
     setEmail('');
     setPassword('');
+    setPassword2('');
   };
   const handleFocus = () => {
     inputPasswordRef.current?.focus();
@@ -55,8 +63,8 @@ const LogIn = () => {
 
   return (
     <Container>
-      <Title>Login</Title>
-      <SubTitle>Sign in your account to see your chat</SubTitle>
+      <Title>Sign Up</Title>
+      <SubTitle>Create your new account</SubTitle>
       <InputContainer>
         <TextInputPaper
           autoComplete="email"
@@ -81,7 +89,7 @@ const LogIn = () => {
           autoComplete="off"
           blurOnSubmit={true}
           keyboardType="default"
-          maxLength={6}
+          maxLength={100}
           secureTextEntry={secureText}
           textContentType="password"
           returnKeyType="send"
@@ -91,12 +99,26 @@ const LogIn = () => {
           onChangeText={setPassword}
           activeUnderlineColor={theme.colors.primary}
           underlineColor={theme.colors.secondary}
-          right={
-            <TouchableOpacity onPress={() => setSecureText(prev => !prev)}>
-              <Icons name="eye" size={10} />
-            </TouchableOpacity>
-          }
           ref={inputPasswordRef}
+          onSubmitEditing={() => {
+            inputPassword2Ref.current?.focus();
+          }}
+        />
+        <TextInputPaper
+          autoComplete="off"
+          blurOnSubmit={true}
+          keyboardType="default"
+          maxLength={100}
+          secureTextEntry={secureText}
+          textContentType="password"
+          returnKeyType="send"
+          style={{backgroundColor: theme.colors.primaryBackground}}
+          label="Confirm password"
+          value={password2}
+          onChangeText={setPassword2}
+          activeUnderlineColor={theme.colors.primary}
+          underlineColor={theme.colors.secondary}
+          ref={inputPassword2Ref}
           onSubmitEditing={handlePress}
         />
       </InputContainer>
@@ -109,20 +131,14 @@ const LogIn = () => {
           <Icons name="eye-off" size={15} />
         </TouchableOpacity>
       )}
-      <TextButton
-        text={'Forget your password?'}
-        handlePress={() => console.log('clecked')}
-      />
-      <MainButton title={'Login'} handlePress={handlePress} />
+
+      <MainButton title={'Register'} handlePress={handlePress} />
       <ViewContainer>
-        <SubTitle>Do yoy have an account?</SubTitle>
-        <TextButton
-          text={'Sign Up'}
-          handlePress={() => console.log('clecked')}
-        />
+        <SubTitle>Already have an account?</SubTitle>
+        <TextButton text={'Login'} handlePress={() => navigation.Login} />
       </ViewContainer>
     </Container>
   );
 };
 
-export default LogIn;
+export default SignUp;

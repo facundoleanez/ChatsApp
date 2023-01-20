@@ -1,5 +1,5 @@
 import React from 'react';
-import {SafeAreaView} from 'react-native';
+import {LogBox, SafeAreaView} from 'react-native';
 // import NavButtonBar from './navegation/NavButtonBar';
 // import TopBar from './navegation/TopBar';
 // import MainDisplay from './navegation/MainDisplay';
@@ -8,6 +8,7 @@ import {chatAppTheme} from './theme/theme';
 import {NavigationContainer} from '@react-navigation/native';
 // import TabNavergator from './navegation';
 // import TopBar from './navegation/TopBar';
+import SignUp from './screens/SignUp';
 import LogIn from './screens/LogIn';
 
 const App = () => {
@@ -18,7 +19,8 @@ const App = () => {
         <SafeAreaView style={{flex: 1}}>
           {/* <TopBar />
           <TabNavergator /> */}
-          <LogIn />
+          <SignUp />
+          {/* <LogIn /> */}
         </SafeAreaView>
       </NavigationContainer>
     </ThemeProvider>
