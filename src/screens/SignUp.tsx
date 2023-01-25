@@ -1,13 +1,17 @@
-import React, {useState, useRef} from 'react';
+import React, {useState, useRef, FC} from 'react';
 import {TouchableOpacity, TextInput} from 'react-native';
 import {TextInput as TextInputPaper} from 'react-native-paper';
 import styled, {useTheme} from 'styled-components/native';
 import MainButton from '../components/buttons/MainButton';
 import Icons from 'react-native-vector-icons/Feather';
 import TextButton from '../components/buttons/TextButton';
-import {RootTabParamList} from '../navegation';
-import {useNavigation} from '@react-navigation/core';
+// import {RootTabParamList} from '../navegation';
+// import {useNavigation} from '@react-navigation/core';
+import {NavigationProp, ParamListBase} from '@react-navigation/native';
 
+interface SignUpProps {
+  navigation: NavigationProp<ParamListBase>;
+}
 //Views
 const Container = styled.View`
   background-color: ${({theme}) => theme.colors.primaryBackground};
@@ -38,7 +42,7 @@ const SubTitle = styled.Text`
   color: ${({theme}) => theme.colors.seccoindaryText};
 `;
 
-const SignUp = () => {
+const SignUp: FC<SignUpProps> = ({navigation}) => {
   const theme = useTheme();
 
   const [email, setEmail] = useState('');
@@ -49,7 +53,7 @@ const SignUp = () => {
   const inputPasswordRef = useRef<TextInput>(null);
   const inputPassword2Ref = useRef<TextInput>(null);
 
-  const navigation = useNavigation<RootTabParamList>();
+  // const navigation = useNavigation<RootTabParamList>();
 
   const handlePress = () => {
     console.log(email, password);
@@ -135,7 +139,7 @@ const SignUp = () => {
       <MainButton title={'Register'} handlePress={handlePress} />
       <ViewContainer>
         <SubTitle>Already have an account?</SubTitle>
-        <TextButton text={'Login'} handlePress={() => navigation.Login} />
+        <TextButton text={'Login'} handlePress={() => navigation.goBack()} />
       </ViewContainer>
     </Container>
   );

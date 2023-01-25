@@ -1,11 +1,15 @@
-import React, {useState, useRef} from 'react';
+import React, {useState, useRef, FC} from 'react';
 import {TouchableOpacity, TextInput} from 'react-native';
 import {TextInput as TextInputPaper} from 'react-native-paper';
 import styled, {useTheme} from 'styled-components/native';
 import MainButton from '../components/buttons/MainButton';
 import Icons from 'react-native-vector-icons/Feather';
 import TextButton from '../components/buttons/TextButton';
+import {NavigationProp, ParamListBase} from '@react-navigation/native';
 
+interface LogInProps {
+  navigation: NavigationProp<ParamListBase>;
+}
 //Views
 const Container = styled.View`
   background-color: ${({theme}) => theme.colors.primaryBackground};
@@ -36,7 +40,7 @@ const SubTitle = styled.Text`
   color: ${({theme}) => theme.colors.seccoindaryText};
 `;
 
-const LogIn = () => {
+const LogIn: FC<LogInProps> = ({navigation}) => {
   const theme = useTheme();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -118,7 +122,7 @@ const LogIn = () => {
         <SubTitle>Do yoy have an account?</SubTitle>
         <TextButton
           text={'Sign Up'}
-          handlePress={() => console.log('clecked')}
+          handlePress={() => navigation.navigate('Signup')}
         />
       </ViewContainer>
     </Container>

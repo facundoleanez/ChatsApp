@@ -5,6 +5,9 @@ import Convers from '../screens/Convers';
 import Chat from '../screens/Chat';
 import {createMaterialBottomTabNavigator} from '@react-navigation/material-bottom-tabs';
 import {useTheme} from 'styled-components/native';
+import {createNativeStackNavigator} from '@react-navigation/native-stack';
+import LogIn from '../screens/LogIn';
+import SignUp from '../screens/SignUp';
 
 export type RootTabParamList = {
   Conversations: undefined;
@@ -16,33 +19,48 @@ export type RootTabParamList = {
 const TabNavergator = () => {
   const theme = useTheme();
   const Tab = createMaterialBottomTabNavigator<RootTabParamList>();
-
+  const uid = 'a';
+  const Stack = createNativeStackNavigator<RootTabParamList>();
   return (
-    <Tab.Navigator
-      initialRouteName="Conversations"
-      barStyle={{backgroundColor: theme.colors.primaryBackground}}
-      activeColor={theme.colors.tertiary}
-      inactiveColor={theme.colors.secondary}
-      labeled={false}>
-      <Tab.Screen
-        name="Conversations"
-        component={Convers}
-        options={{
-          tabBarIcon: ({color}) => (
-            <Icon name="people" size={30} color={color} />
-          ),
-        }}
-      />
-      <Tab.Screen
-        name="Chat"
-        component={Chat}
-        options={{
-          tabBarIcon: ({color}) => (
-            <Icons name="message-circle" size={30} color={color} />
-          ),
-        }}
-      />
-    </Tab.Navigator>
+    <>
+      {uid ? (
+        <Tab.Navigator
+          initialRouteName="Conversations"
+          barStyle={{backgroundColor: theme.colors.primaryBackground}}
+          activeColor={theme.colors.tertiary}
+          inactiveColor={theme.colors.secondary}
+          labeled={false}>
+          <Tab.Screen
+            name="Conversations"
+            component={Convers}
+            options={{
+              tabBarIcon: ({color}) => (
+                <Icon name="people" size={30} color={color} />
+              ),
+            }}
+          />
+          <Tab.Screen
+            name="Chat"
+            component={Chat}
+            options={{
+              tabBarIcon: ({color}) => (
+                <Icons name="message-circle" size={30} color={color} />
+              ),
+            }}
+          />
+        </Tab.Navigator>
+      ) : (
+        <>
+          <Stack.Navigator
+            screenOptions={{
+              headerShown: false,
+            }}>
+            <Stack.Screen name="Login" component={LogIn} />
+            <Stack.Screen name="Signup" component={SignUp} />
+          </Stack.Navigator>
+        </>
+      )}
+    </>
   );
 };
 
