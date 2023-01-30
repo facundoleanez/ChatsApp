@@ -1,9 +1,12 @@
 import React from 'react';
-import {ScrollView} from 'react-native';
+import {ScrollView, StyleSheet} from 'react-native';
 import styled, {useTheme} from 'styled-components/native';
 import CardConvers from '../components/cards/CardConversation';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 // import {ConversationList} from '../utils/constants';
+import {useNavigation} from '@react-navigation/native';
+import {MaterialBottomTabNavigationProp} from '@react-navigation/material-bottom-tabs';
+import {RootTabParamList} from '../navegation';
 
 const ContainerConver = styled.View`
   border: 0px solid ${({theme}) => theme.colors.seccoindaryText};
@@ -34,13 +37,18 @@ const TopMargin = styled.View`
   border-left-width: 1px;
   border-right-width: 1px;
 `;
-
+const styles = StyleSheet.create({
+  borderShadow: {
+    elevation: 20,
+  },
+});
 const Convers = () => {
   const theme = useTheme();
-
+  const navigation =
+    useNavigation<MaterialBottomTabNavigationProp<RootTabParamList>>();
   return (
     <ContainerConver>
-      <TopMargin style={{elevation: 20}} />
+      <TopMargin style={styles.borderShadow} />
       <ScrollView>
         {/* {ConversationList.map(conver => (
           <CardConvers id={conver.id} name={conver.} />
@@ -51,7 +59,9 @@ const Convers = () => {
           date={'20/03'}
         />
       </ScrollView>
-      <ButtonPlus style={{elevation: 5}}>
+      <ButtonPlus
+        style={styles.borderShadow}
+        onPress={() => navigation.navigate('Contacts')}>
         <Icon name="plus" size={20} color={theme.colors.seccoindaryText} />
       </ButtonPlus>
     </ContainerConver>

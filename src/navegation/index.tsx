@@ -10,12 +10,14 @@ import LogIn from '../screens/LogIn';
 import SignUp from '../screens/SignUp';
 import {GlobalContext} from '../App';
 import TopBar from './TopBar';
+import Contacts from '../screens/Contacts';
 
 export type RootTabParamList = {
   Conversations: undefined;
   Chat: undefined;
   Login: undefined;
   Signup: undefined;
+  Contacts: undefined;
 };
 
 const TabNavergator = () => {
@@ -40,7 +42,7 @@ const TabNavergator = () => {
               component={Convers}
               options={{
                 tabBarIcon: ({color}) => (
-                  <Icon name="people" size={30} color={color} />
+                  <Icon name="chatbubbles-outline" size={30} color={color} />
                 ),
               }}
             />
@@ -50,6 +52,15 @@ const TabNavergator = () => {
               options={{
                 tabBarIcon: ({color}) => (
                   <Icons name="message-circle" size={30} color={color} />
+                ),
+              }}
+            />
+            <Tab.Screen
+              name="Contacts"
+              component={Contacts}
+              options={{
+                tabBarIcon: ({color}) => (
+                  <Icon name="people-outline" size={30} color={color} />
                 ),
               }}
             />
