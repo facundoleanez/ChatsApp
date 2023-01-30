@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useContext, useMemo} from 'react';
 import Icon from 'react-native-vector-icons/Ionicons';
 import Icons from 'react-native-vector-icons/Feather';
 import Convers from '../screens/Convers';
@@ -8,6 +8,8 @@ import {useTheme} from 'styled-components/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import LogIn from '../screens/LogIn';
 import SignUp from '../screens/SignUp';
+import {GlobalContext} from '../App';
+import TopBar from './TopBar';
 
 export type RootTabParamList = {
   Conversations: undefined;
@@ -17,38 +19,42 @@ export type RootTabParamList = {
 };
 
 const TabNavergator = () => {
+  const context = useContext(GlobalContext);
+  const uid = useMemo(() => context?.context.uid, [context]);
   const theme = useTheme();
   const Tab = createMaterialBottomTabNavigator<RootTabParamList>();
-  const uid = 'a';
   const Stack = createNativeStackNavigator<RootTabParamList>();
   return (
     <>
       {uid ? (
-        <Tab.Navigator
-          initialRouteName="Conversations"
-          barStyle={{backgroundColor: theme.colors.primaryBackground}}
-          activeColor={theme.colors.tertiary}
-          inactiveColor={theme.colors.secondary}
-          labeled={false}>
-          <Tab.Screen
-            name="Conversations"
-            component={Convers}
-            options={{
-              tabBarIcon: ({color}) => (
-                <Icon name="people" size={30} color={color} />
-              ),
-            }}
-          />
-          <Tab.Screen
-            name="Chat"
-            component={Chat}
-            options={{
-              tabBarIcon: ({color}) => (
-                <Icons name="message-circle" size={30} color={color} />
-              ),
-            }}
-          />
-        </Tab.Navigator>
+        <>
+          <TopBar />
+          <Tab.Navigator
+            initialRouteName="Conversations"
+            barStyle={{backgroundColor: theme.colors.primaryBackground}}
+            activeColor={theme.colors.tertiary}
+            inactiveColor={theme.colors.secondary}
+            labeled={false}>
+            <Tab.Screen
+              name="Conversations"
+              component={Convers}
+              options={{
+                tabBarIcon: ({color}) => (
+                  <Icon name="people" size={30} color={color} />
+                ),
+              }}
+            />
+            <Tab.Screen
+              name="Chat"
+              component={Chat}
+              options={{
+                tabBarIcon: ({color}) => (
+                  <Icons name="message-circle" size={30} color={color} />
+                ),
+              }}
+            />
+          </Tab.Navigator>
+        </>
       ) : (
         <>
           <Stack.Navigator

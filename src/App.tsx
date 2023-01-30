@@ -1,25 +1,32 @@
-import React from 'react';
+import React, {useState, SetStateAction} from 'react';
 import {SafeAreaView} from 'react-native';
-// import NavButtonBar from './navegation/NavButtonBar';
-// import TopBar from './navegation/TopBar';
-// import MainDisplay from './navegation/MainDisplay';
 import {ThemeProvider} from 'styled-components/native';
 import {chatAppTheme} from './theme/theme';
 import {NavigationContainer} from '@react-navigation/native';
 import TabNavergator from './navegation';
-import TopBar from './navegation/TopBar';
+
+interface GlobalContextType {
+  uid: string;
+}
+export interface ContextType {
+  context: GlobalContextType;
+  setContext: React.Dispatch<SetStateAction<GlobalContextType>>;
+}
+
+export const GlobalContext = React.createContext<ContextType | null>(null);
 
 const App = () => {
-  // const GlobalContext = React.createContext(null);
+  const [context, setContext] = useState<GlobalContextType>({uid: ''});
   return (
-    <ThemeProvider theme={chatAppTheme}>
-      <NavigationContainer>
-        <SafeAreaView style={{flex: 1}}>
-          {/* <TopBar /> */}
-          <TabNavergator />
-        </SafeAreaView>
-      </NavigationContainer>
-    </ThemeProvider>
+    <GlobalContext.Provider value={{context, setContext}}>
+      <ThemeProvider theme={chatAppTheme}>
+        <NavigationContainer>
+          <SafeAreaView style={{flex: 1}}>
+            <TabNavergator />
+          </SafeAreaView>
+        </NavigationContainer>
+      </ThemeProvider>
+    </GlobalContext.Provider>
   );
 };
 

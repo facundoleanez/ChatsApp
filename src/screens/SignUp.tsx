@@ -1,4 +1,4 @@
-import React, {useState, useRef, FC} from 'react';
+import React, {useState, useRef, FC, useContext} from 'react';
 import {TouchableOpacity, TextInput} from 'react-native';
 import {TextInput as TextInputPaper} from 'react-native-paper';
 import styled, {useTheme} from 'styled-components/native';
@@ -8,6 +8,7 @@ import TextButton from '../components/buttons/TextButton';
 // import {RootTabParamList} from '../navegation';
 // import {useNavigation} from '@react-navigation/core';
 import {NavigationProp, ParamListBase} from '@react-navigation/native';
+import {GlobalContext} from '../App';
 
 interface SignUpProps {
   navigation: NavigationProp<ParamListBase>;
@@ -43,6 +44,8 @@ const SubTitle = styled.Text`
 `;
 
 const SignUp: FC<SignUpProps> = ({navigation}) => {
+  const context = useContext(GlobalContext);
+  const setContext = context?.setContext;
   const theme = useTheme();
 
   const [email, setEmail] = useState('');
@@ -60,6 +63,9 @@ const SignUp: FC<SignUpProps> = ({navigation}) => {
     setEmail('');
     setPassword('');
     setPassword2('');
+    if (setContext) {
+      setContext(prev => ({...prev, uid: 'algo'}));
+    }
   };
   const handleFocus = () => {
     inputPasswordRef.current?.focus();
