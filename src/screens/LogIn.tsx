@@ -1,4 +1,4 @@
-import React, {useState, useRef, FC, useContext} from 'react';
+import React, {useState, useRef, FC} from 'react';
 import {TouchableOpacity, TextInput} from 'react-native';
 import {TextInput as TextInputPaper} from 'react-native-paper';
 import styled, {useTheme} from 'styled-components/native';
@@ -6,7 +6,8 @@ import MainButton from '../components/buttons/MainButton';
 import Icons from 'react-native-vector-icons/Feather';
 import TextButton from '../components/buttons/TextButton';
 import {NavigationProp, ParamListBase} from '@react-navigation/native';
-import {GlobalContext} from '../App';
+import auth from '@react-native-firebase/auth';
+import Loading from './Loading';
 
 interface LogInProps {
   navigation: NavigationProp<ParamListBase>;
@@ -42,22 +43,39 @@ const SubTitle = styled.Text`
 `;
 
 const LogIn: FC<LogInProps> = ({navigation}) => {
-  const context = useContext(GlobalContext);
-  const setContext = context?.setContext;
   const theme = useTheme();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [secureText, setSecureText] = useState(true);
+  const [prossesing, setProssesing] = useState(false);
 
   const inputPasswordRef = useRef<TextInput>(null);
 
   const handlePress = () => {
+    setProssesing(true);
     console.log(email, password);
     setEmail('');
     setPassword('');
-    if (setContext) {
-      setContext(prev => ({...prev, uid: 'algo'}));
-    }
+    auth()
+      .signInWithEmailAndPassword(email, password)
+      .then(() => {
+        console.log('User account created & signed in!');
+        setProssesing(false);
+      })
+      .catch(error => {
+        if (error.code === 'auth/email-already-in-use') {
+          console.log('That email address is already in use!');
+          setProssesing(false);
+        }
+
+        if (error.code === 'auth/invalid-email') {
+          console.log('That email address is invalid!');
+          setProssesing(false);
+        }
+
+        console.error(error);
+        setProssesing(false);
+      });
   };
   const handleFocus = () => {
     inputPasswordRef.current?.focus();
@@ -65,6 +83,7 @@ const LogIn: FC<LogInProps> = ({navigation}) => {
 
   return (
     <Container>
+      {prossesing && <Loading />}
       <Title>Login</Title>
       <SubTitle>Sign in your account to see your chat</SubTitle>
       <InputContainer>

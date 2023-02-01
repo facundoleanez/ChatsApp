@@ -1,4 +1,4 @@
-import React, {useState, useRef, FC, useContext} from 'react';
+import React, {useState, useRef, FC} from 'react';
 import {TouchableOpacity, TextInput} from 'react-native';
 import {TextInput as TextInputPaper} from 'react-native-paper';
 import styled, {useTheme} from 'styled-components/native';
@@ -8,7 +8,9 @@ import TextButton from '../components/buttons/TextButton';
 // import {RootTabParamList} from '../navegation';
 // import {useNavigation} from '@react-navigation/core';
 import {NavigationProp, ParamListBase} from '@react-navigation/native';
-import {GlobalContext} from '../App';
+// import {GlobalContext} from '../App';
+import auth from '@react-native-firebase/auth';
+import Loading from './Loading';
 
 interface SignUpProps {
   navigation: NavigationProp<ParamListBase>;
@@ -44,14 +46,15 @@ const SubTitle = styled.Text`
 `;
 
 const SignUp: FC<SignUpProps> = ({navigation}) => {
-  const context = useContext(GlobalContext);
-  const setContext = context?.setContext;
+  // const context = useContext(GlobalContext);
+  // const setContext = context?.setContext;
   const theme = useTheme();
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [password2, setPassword2] = useState('');
   const [secureText, setSecureText] = useState(true);
+  const [prossesing, setProssesing] = useState(false);
 
   const inputPasswordRef = useRef<TextInput>(null);
   const inputPassword2Ref = useRef<TextInput>(null);
@@ -59,13 +62,30 @@ const SignUp: FC<SignUpProps> = ({navigation}) => {
   // const navigation = useNavigation<RootTabParamList>();
 
   const handlePress = () => {
+    setProssesing(true);
     console.log(email, password);
     setEmail('');
     setPassword('');
     setPassword2('');
-    if (setContext) {
-      setContext(prev => ({...prev, uid: 'algo'}));
-    }
+    auth()
+      .createUserWithEmailAndPassword(email, password)
+      .then(() => {
+        console.log('User account created & signed in!');
+        setProssesing(false);
+      })
+      .catch(error => {
+        if (error.code === 'auth/email-already-in-use') {
+          console.log('That email address is already in use!');
+          setProssesing(false);
+        }
+
+        if (error.code === 'auth/invalid-email') {
+          console.log('That email address is invalid!');
+          setProssesing(false);
+        }
+        setProssesing(false);
+        console.error(error);
+      });
   };
   const handleFocus = () => {
     inputPasswordRef.current?.focus();
@@ -73,6 +93,8 @@ const SignUp: FC<SignUpProps> = ({navigation}) => {
 
   return (
     <Container>
+      {prossesing && <Loading />}
+
       <Title>Sign Up</Title>
       <SubTitle>Create your new account</SubTitle>
       <InputContainer>

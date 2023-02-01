@@ -1,8 +1,10 @@
-import {Text, StyleSheet} from 'react-native';
+import {Text, StyleSheet, TouchableOpacity} from 'react-native';
 import React from 'react';
 // import imgProfile from '../imgs/profile.png';
 import styled from 'styled-components/native';
 import Avatar from '../components/data-display/Avatar';
+import auth from '@react-native-firebase/auth';
+
 interface ContainerProps {
   dark?: boolean;
 }
@@ -44,10 +46,17 @@ const styles = StyleSheet.create({
 });
 
 const TopBar = () => {
+  const logOut = () => {
+    auth()
+      .signOut()
+      .then(() => console.log('User signed out!'));
+  };
   return (
     <Container>
       <Text style={styles.sectionTitle}>Chat Assssspp</Text>
-      <Avatar size={30} />
+      <TouchableOpacity onPress={logOut}>
+        <Avatar size={30} />
+      </TouchableOpacity>
     </Container>
   );
 };
