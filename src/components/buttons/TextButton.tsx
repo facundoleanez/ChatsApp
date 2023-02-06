@@ -16,7 +16,7 @@ const ButonTitle = styled.Text<ComponentProps>`
   font-size: 20px;
   color: ${({theme, main}) =>
     main ? theme.colors.primary : theme.colors.seccoindaryText};
-  margin: 10px;
+  margin: 5px;
 `;
 
 const TextButton: FC<TextButtonProps> = ({main = true, handlePress, text}) => {

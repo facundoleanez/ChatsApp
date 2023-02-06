@@ -30,7 +30,7 @@ const App = () => {
         setInitializing(false);
       }
     });
-  }, []);
+  }, [initializing]);
 
   useEffect(() => {
     if (user) {

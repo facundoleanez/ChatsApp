@@ -1,4 +1,5 @@
 import React, {useState, useRef, FC} from 'react';
+import {View} from 'react-native';
 import {TouchableOpacity, TextInput} from 'react-native';
 import {TextInput as TextInputPaper} from 'react-native-paper';
 import styled, {useTheme} from 'styled-components/native';
@@ -8,6 +9,7 @@ import TextButton from '../components/buttons/TextButton';
 import {NavigationProp, ParamListBase} from '@react-navigation/native';
 import auth from '@react-native-firebase/auth';
 import Loading from './Loading';
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 interface LogInProps {
   navigation: NavigationProp<ParamListBase>;
@@ -16,7 +18,7 @@ interface LogInProps {
 const Container = styled.View`
   background-color: ${({theme}) => theme.colors.primaryBackground};
   flex: 1;
-  justify-content: center;
+  justify-content: space-around;
   align-items: center;
   padding: 30px;
 `;
@@ -31,6 +33,11 @@ const ViewContainer = styled.View`
   justify-content: center;
   align-items: center;
 `;
+const Divider = styled.View`
+  border: solid 1px ${({theme}) => theme.colors.secondary};
+  width: 100%;
+  margin: 20px;
+`;
 //Texts
 const Title = styled.Text`
   font-size: 40px;
@@ -40,6 +47,19 @@ const Title = styled.Text`
 const SubTitle = styled.Text`
   font-size: 15px;
   color: ${({theme}) => theme.colors.seccoindaryText};
+`;
+//Buttons
+export const SocialSigninButton = styled.TouchableOpacity`
+  font-size: 20px;
+  background-color: ${({theme}) => theme.colors.secondary};
+  border-radius: 20px;
+  width: 100%;
+  align-items: center;
+  margin-top: 5px;
+  margin-bottom: 5px;
+  padding: 5px;
+  flex-direction: row;
+  justify-content: space-evenly;
 `;
 
 const LogIn: FC<LogInProps> = ({navigation}) => {
@@ -84,7 +104,7 @@ const LogIn: FC<LogInProps> = ({navigation}) => {
   return (
     <Container>
       {prossesing && <Loading />}
-      <Title>Login</Title>
+      <Title>Welcome Back</Title>
       <SubTitle>Sign in your account to see your chat</SubTitle>
       <InputContainer>
         <TextInputPaper
@@ -142,7 +162,22 @@ const LogIn: FC<LogInProps> = ({navigation}) => {
         text={'Forget your password?'}
         handlePress={() => console.log('clecked')}
       />
+
       <MainButton title={'Login'} handlePress={handlePress} />
+
+      <Divider />
+
+      <View>
+        <SocialSigninButton>
+          <Icon name="facebook" size={25} />
+          <SubTitle>Login with facebook</SubTitle>
+        </SocialSigninButton>
+        <SocialSigninButton>
+          <Icon name="gmail" size={25} />
+          <SubTitle>Login with gmail</SubTitle>
+        </SocialSigninButton>
+      </View>
+
       <ViewContainer>
         <SubTitle>Do yoy have an account?</SubTitle>
         <TextButton

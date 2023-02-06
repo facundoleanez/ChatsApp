@@ -10,3 +10,7 @@ export interface ConversationType {
   id: string;
   messages: MessageType[];
 }
+export interface ContactType {
+  uid: string
+  name:string
+}

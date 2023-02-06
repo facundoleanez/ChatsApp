@@ -7,6 +7,7 @@ import Icon from 'react-native-vector-icons/FontAwesome5';
 import {useNavigation} from '@react-navigation/native';
 import {MaterialBottomTabNavigationProp} from '@react-navigation/material-bottom-tabs';
 import {RootTabParamList} from '../navegation';
+import TestingStorage from '../utils/TestingStorage';
 
 const ContainerConver = styled.View`
   border: 0px solid ${({theme}) => theme.colors.seccoindaryText};
@@ -58,6 +59,7 @@ const Convers = () => {
           lastMessage={'hola'}
           date={'20/03'}
         />
+      <TestingStorage/>
       </ScrollView>
       <ButtonPlus
         style={styles.borderShadow}

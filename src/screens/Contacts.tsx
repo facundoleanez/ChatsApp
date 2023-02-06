@@ -1,7 +1,9 @@
-import React from 'react';
+import React,{useEffect, useState} from 'react';
 import {StyleSheet} from 'react-native';
 import styled from 'styled-components/native';
 import CardContact from '../components/cards/CardContact';
+import { getData } from '../controllers/localStorage';
+import { ContactType } from '../utils/types';
 
 const Container = styled.View`
   border: 0px solid ${({theme}) => theme.colors.seccoindaryText};
@@ -25,13 +27,26 @@ const styles = StyleSheet.create({
   },
 });
 const Contacts = () => {
+  
+const [contacts, setContacts] = useState<ContactType[]>([])
+
+const getContacts = async() =>{
+  const cont = await getData('contacts')
+  setContacts(cont)
+  console.log(cont)
+}
+  useEffect( () => {
+    getContacts()
+  }, [])
+  
   return (
     <Container>
       <TopMargin style={styles.borderShadow} />
-      <CardContact name={'Sebastian montagna'} />
-      <CardContact name={'Fer Perez'} />
-      <CardContact name={'Beatriz Juarez'} />
-      <CardContact name={'Facundo Leanez'} />
+      {
+        contacts.map(contact =>(
+          <CardContact key={contact.uid} name={contact.name} />
+        ))
+      }
     </Container>
   );
 };
