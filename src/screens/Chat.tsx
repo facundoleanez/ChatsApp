@@ -1,11 +1,17 @@
-import React, {useContext, useEffect, useMemo, useState} from 'react';
+import React, {
+  useCallback,
+  useContext,
+  useEffect,
+  useMemo,
+  useState,
+} from 'react';
 import MessagePill from '../components/data-display/MessagePill';
 import styled from 'styled-components/native';
 import CardChatProfile from '../components/cards/CardChatProfile';
 import InputSendMessage from '../components/inputs/InputSendMessage';
 import {GlobalContext} from '../App';
 import {getData} from '../controllers/localStorage';
-import {ConversationType} from '../utils/types';
+import {MessageType} from '../utils/types';
 
 const ChatContainer = styled.View`
   width: 100%;
@@ -17,27 +23,28 @@ const MessageList = styled.ScrollView`
 
 const Chat = () => {
   const context = useContext(GlobalContext);
-  const chatId = useMemo(() => context?.context.chat, [context]);
-  const [chat, setChat] = useState<ConversationType>();
+  const chatId = useMemo(() => context?.context.chatId, [context]);
 
-  const getChat = async (id: string) => {
-    const chatConv = await getData(id);
-    setChat(chatConv);
-  };
+  const [chat, setChat] = useState<MessageType[]>();
 
-  useEffect(() => {
+  const getChat = useCallback(async () => {
     if (chatId) {
-      getChat(chatId);
+      const chatConv = await getData(chatId);
+      setChat(chatConv);
     }
   }, [chatId]);
+
+  useEffect(() => {
+    getChat();
+  }, [getChat]);
 
   return (
     <ChatContainer>
       <CardChatProfile />
       <MessageList>
         {chat &&
-          chat.messages.map(message => (
-            <MessagePill message={message} key={message.id} uid={'000001'} />
+          chat.map(message => (
+            <MessagePill message={message} key={JSON.stringify(message.date)} />
           ))}
       </MessageList>
       <InputSendMessage />

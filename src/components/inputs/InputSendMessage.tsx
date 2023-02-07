@@ -1,6 +1,8 @@
-import React from 'react';
+import React, {useContext, useMemo, useState} from 'react';
 import styled, {useTheme} from 'styled-components/native';
 import Icon from 'react-native-vector-icons/Ionicons';
+import {sendMessageMerge} from '../../controllers/localStorage';
+import {GlobalContext} from '../../App';
 
 const InputContainer = styled.View`
   background-color: ${({theme}) => theme.colors.primaryBackground};
@@ -32,10 +34,26 @@ const ButtomSend = styled.TouchableOpacity`
 
 const InputSendMessage = () => {
   const theme = useTheme();
+  const [message, setMessage] = useState('');
+  const context = useContext(GlobalContext);
+  const uid = useMemo(() => context?.context.uid, [context]);
+  const chatId = useMemo(() => context?.context.chatId, [context]);
+
+  const handlePressSend = () => {
+    if (uid && chatId && message) {
+      sendMessageMerge(uid, chatId, message);
+      setMessage('');
+    }
+  };
   return (
     <InputContainer>
-      <InputPill placeholder="Hola" />
-      <ButtomSend>
+      <InputPill
+        placeholder="Write your message"
+        value={message}
+        onChangeText={setMessage}
+        autoFocus={true}
+      />
+      <ButtomSend onPress={handlePressSend}>
         <Icon name="send" size={20} color={theme.colors.seccoindaryText} />
       </ButtomSend>
     </InputContainer>

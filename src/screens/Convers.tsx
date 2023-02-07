@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import {ScrollView, StyleSheet} from 'react-native';
 import styled, {useTheme} from 'styled-components/native';
 import CardConvers from '../components/cards/CardConversation';
@@ -8,6 +8,8 @@ import {useNavigation} from '@react-navigation/native';
 import {MaterialBottomTabNavigationProp} from '@react-navigation/material-bottom-tabs';
 import {RootTabParamList} from '../navegation';
 import TestingStorage from '../utils/TestingStorage';
+import {ConversType} from '../utils/types';
+import {getData} from '../controllers/localStorage';
 
 const ContainerConver = styled.View`
   border: 0px solid ${({theme}) => theme.colors.seccoindaryText};
@@ -44,22 +46,37 @@ const styles = StyleSheet.create({
   },
 });
 const Convers = () => {
+  const [convers, setConvers] = useState<ConversType[] | null>(null);
   const theme = useTheme();
   const navigation =
     useNavigation<MaterialBottomTabNavigationProp<RootTabParamList>>();
+  const getConverList = async () => {
+    const converList = await getData('convers');
+    setConvers(converList);
+  };
+  useEffect(() => {
+    getConverList();
+  }, [convers]);
+
   return (
     <ContainerConver>
       <TopMargin style={styles.borderShadow} />
       <ScrollView>
-        {/* {ConversationList.map(conver => (
-          <CardConvers id={conver.id} name={conver.} />
-        ))} */}
+        {convers &&
+          convers.map(conver => (
+            <CardConvers
+              key={conver.uid}
+              name={conver.name}
+              lastMessage={conver.lastMessage}
+              date={conver.lastTime}
+            />
+          ))}
         <CardConvers
           name={'Sebastian Montagna'}
           lastMessage={'hola'}
           date={'20/03'}
         />
-      <TestingStorage/>
+        <TestingStorage />
       </ScrollView>
       <ButtonPlus
         style={styles.borderShadow}

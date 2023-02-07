@@ -1,31 +1,36 @@
-import { View, Text, TouchableOpacity } from 'react-native'
-import React from 'react'
-import { Button } from 'react-native-paper'
-import { getAllKeysConver, getData, removeConversation, storeData } from '../controllers/localStorage'
-import { contactsList } from './constants'
+import {View, Text} from 'react-native';
+import React from 'react';
+import {Button} from 'react-native-paper';
+import {
+  getAllKeysConver,
+  getData,
+  removeConversation,
+  storeData,
+} from '../controllers/localStorage';
+import {contactsList} from './constants';
 
 const TestingStorage = () => {
-    const handlePressSave = () =>{
-        console.log('saved')
-        const algo = storeData('contacts', contactsList)
-        console.log(algo)
-    } 
-    const handlePressGet = async() =>{
-        console.log('got')
-        const algo = await getData('contacts')
-        console.log(algo)
-    }
-    
-    const handlePressDel = async() =>{
-        console.log('got')
-        const algo = await removeConversation('test')
-        console.log(algo)
-    }
-    const handlePressGetAll = async() =>{
-      console.log('got')
-      const algo = await getAllKeysConver()
-      console.log(algo)
-  }
+  const handlePressSave = () => {
+    console.log('saved');
+    const algo = storeData('contacts', contactsList);
+    console.log(algo);
+  };
+  const handlePressGet = async () => {
+    console.log('got');
+    const algo = await getData('125');
+    console.log(algo);
+  };
+
+  const handlePressDel = async () => {
+    console.log('got');
+    const algo = await removeConversation('125');
+    console.log(algo);
+  };
+  const handlePressGetAll = async () => {
+    console.log('got');
+    const algo = await getAllKeysConver();
+    console.log(algo);
+  };
   return (
     <View>
       <Text>TestingStorage</Text>
@@ -42,7 +47,7 @@ const TestingStorage = () => {
         <Text>getAll</Text>
       </Button>
     </View>
-  )
-}
+  );
+};
 
-export default TestingStorage
+export default TestingStorage;

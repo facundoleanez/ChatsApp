@@ -1,5 +1,6 @@
-import React, {FC, useState} from 'react';
+import React, {FC, useContext, useMemo, useState} from 'react';
 import styled from 'styled-components/native';
+import {GlobalContext} from '../../App';
 import {MessageType} from '../../utils/types';
 
 interface ChatPillProps {
@@ -33,11 +34,12 @@ const TextHour = styled.Text`
 `;
 interface MessagePillProps {
   message: MessageType;
-  uid: string;
 }
-const MessagePill: FC<MessagePillProps> = ({message, uid}) => {
+const MessagePill: FC<MessagePillProps> = ({message}) => {
   //TODO: poner el usememo para que no calcule dos veces
   const [showHour, setShowHour] = useState(false);
+  const context = useContext(GlobalContext);
+  const uid = useMemo(() => context?.context.uid, [context]);
   return (
     <>
       {showHour && (

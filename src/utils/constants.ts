@@ -1,19 +1,19 @@
 import {ConversationType} from './types';
 export const contactsList = [
   {
-    uid : '125',
-    name: 'Facundo Leanez'
+    uid: '125',
+    name: 'Facundo Leanez',
   },
   {
-    uid : '173',
-    name: 'Sebastian Montagna'
+    uid: '173',
+    name: 'Sebastian Montagna',
   },
   {
-    uid : '128',
-    name: 'Beatriz Juarez'
+    uid: '128',
+    name: 'Beatriz Juarez',
   },
-]
-export const conversationData:ConversationType =  {
+];
+export const conversationData: ConversationType = {
   id: '1234123',
   messages: [
     {
@@ -45,7 +45,7 @@ export const conversationData:ConversationType =  {
       message: 'Hola este es un mensaje de texto',
     },
   ],
-}
+};
 export const ConversationList: ConversationType[] = [
   {
     id: '1234123',

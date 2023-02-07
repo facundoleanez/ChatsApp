@@ -9,6 +9,7 @@ import Loading from './screens/Loading';
 
 interface GlobalContextType {
   uid: string;
+  chatId: string;
 }
 export interface ContextType {
   context: GlobalContextType;
@@ -18,7 +19,10 @@ export interface ContextType {
 export const GlobalContext = React.createContext<ContextType | null>(null);
 
 const App = () => {
-  const [context, setContext] = useState<GlobalContextType>({uid: ''});
+  const [context, setContext] = useState<GlobalContextType>({
+    uid: '',
+    chatId: '',
+  });
   const [initializing, setInitializing] = useState(true);
   const [user, setUser] = useState<FirebaseAuthTypes.User | null>(null);
 
