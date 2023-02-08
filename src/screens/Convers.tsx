@@ -1,4 +1,10 @@
-import React, {useEffect, useState} from 'react';
+import React, {
+  useCallback,
+  useContext,
+  useEffect,
+  useMemo,
+  useState,
+} from 'react';
 import {ScrollView, StyleSheet} from 'react-native';
 import styled, {useTheme} from 'styled-components/native';
 import CardConvers from '../components/cards/CardConversation';
@@ -8,8 +14,9 @@ import {useNavigation} from '@react-navigation/native';
 import {MaterialBottomTabNavigationProp} from '@react-navigation/material-bottom-tabs';
 import {RootTabParamList} from '../navegation';
 import TestingStorage from '../utils/TestingStorage';
-import {ConversType} from '../utils/types';
+import {ContactType, ConversType} from '../utils/types';
 import {getData} from '../controllers/localStorage';
+import {GlobalContext} from '../App';
 
 const ContainerConver = styled.View`
   border: 0px solid ${({theme}) => theme.colors.seccoindaryText};
@@ -46,36 +53,49 @@ const styles = StyleSheet.create({
   },
 });
 const Convers = () => {
-  const [convers, setConvers] = useState<ConversType[] | null>(null);
+  const [convers, setConvers] = useState<ConversType[]>([]);
+  const context = useContext(GlobalContext);
+  const setContext = useMemo(() => context?.setContext, [context]);
+  const chatId = useMemo(() => context?.context.chatId, [context]);
   const theme = useTheme();
   const navigation =
     useNavigation<MaterialBottomTabNavigationProp<RootTabParamList>>();
-  const getConverList = async () => {
-    const converList = await getData('convers');
+
+  const getConverList = useCallback(async () => {
+    const contactList: ContactType[] = await getData('contacts');
+    const converList: ConversType[] = contactList
+      .filter(cont => cont.lastTime)
+      .map(cont => ({
+        uid: cont.uid,
+        name: cont.name,
+        pic: cont?.pic,
+        lastMessage: cont.lastTime?.message || '',
+        lastTime: cont.lastTime?.date || '',
+      }));
     setConvers(converList);
-  };
+    if (setContext && !chatId) {
+      setContext(prev => ({...prev, chatId: converList[0].uid}));
+    }
+    console.log('f');
+  }, [setContext, chatId]);
+
   useEffect(() => {
     getConverList();
-  }, [convers]);
+  }, [getConverList, chatId]);
 
   return (
     <ContainerConver>
       <TopMargin style={styles.borderShadow} />
       <ScrollView>
-        {convers &&
-          convers.map(conver => (
-            <CardConvers
-              key={conver.uid}
-              name={conver.name}
-              lastMessage={conver.lastMessage}
-              date={conver.lastTime}
-            />
-          ))}
-        <CardConvers
-          name={'Sebastian Montagna'}
-          lastMessage={'hola'}
-          date={'20/03'}
-        />
+        {convers.map(conver => (
+          <CardConvers
+            uid={conver.uid}
+            key={conver.uid}
+            name={conver.name}
+            lastMessage={conver.lastMessage}
+            date={new Date(conver.lastTime)}
+          />
+        ))}
         <TestingStorage />
       </ScrollView>
       <ButtonPlus

@@ -1,8 +1,8 @@
-import React, {useContext, useMemo, useState} from 'react';
+import React, {FC, useContext, useEffect, useMemo, useState} from 'react';
 import styled, {useTheme} from 'styled-components/native';
 import Icon from 'react-native-vector-icons/Ionicons';
-import {sendMessageMerge} from '../../controllers/localStorage';
 import {GlobalContext} from '../../App';
+import {MessageType} from '../../utils/types';
 
 const InputContainer = styled.View`
   background-color: ${({theme}) => theme.colors.primaryBackground};
@@ -32,7 +32,11 @@ const ButtomSend = styled.TouchableOpacity`
   justify-content: center;
 `;
 
-const InputSendMessage = () => {
+interface InputSendMessageProps {
+  setChat: React.Dispatch<React.SetStateAction<MessageType[]>>;
+}
+
+const InputSendMessage: FC<InputSendMessageProps> = ({setChat}) => {
   const theme = useTheme();
   const [message, setMessage] = useState('');
   const context = useContext(GlobalContext);
@@ -41,10 +45,17 @@ const InputSendMessage = () => {
 
   const handlePressSend = () => {
     if (uid && chatId && message) {
-      sendMessageMerge(uid, chatId, message);
+      const newMessage: MessageType = {
+        date: new Date(),
+        senderId: uid,
+        recipentId: chatId,
+        message: message,
+      };
+      setChat(prev => [...prev, newMessage]);
       setMessage('');
     }
   };
+
   return (
     <InputContainer>
       <InputPill

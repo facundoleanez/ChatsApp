@@ -10,7 +10,7 @@ import styled from 'styled-components/native';
 import CardChatProfile from '../components/cards/CardChatProfile';
 import InputSendMessage from '../components/inputs/InputSendMessage';
 import {GlobalContext} from '../App';
-import {getData} from '../controllers/localStorage';
+import {getData, storeData} from '../controllers/localStorage';
 import {MessageType} from '../utils/types';
 
 const ChatContainer = styled.View`
@@ -25,7 +25,7 @@ const Chat = () => {
   const context = useContext(GlobalContext);
   const chatId = useMemo(() => context?.context.chatId, [context]);
 
-  const [chat, setChat] = useState<MessageType[]>();
+  const [chat, setChat] = useState<MessageType[]>([]);
 
   const getChat = useCallback(async () => {
     if (chatId) {
@@ -38,6 +38,12 @@ const Chat = () => {
     getChat();
   }, [getChat]);
 
+  useEffect(() => {
+    if (chatId) {
+      storeData(chatId, chat);
+    }
+  }, [chat, chatId]);
+
   return (
     <ChatContainer>
       <CardChatProfile />
@@ -47,7 +53,7 @@ const Chat = () => {
             <MessagePill message={message} key={JSON.stringify(message.date)} />
           ))}
       </MessageList>
-      <InputSendMessage />
+      <InputSendMessage setChat={setChat} />
     </ChatContainer>
   );
 };

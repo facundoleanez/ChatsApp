@@ -16,8 +16,7 @@ const TestingStorage = () => {
     console.log(algo);
   };
   const handlePressGet = async () => {
-    console.log('got');
-    const algo = await getData('125');
+    const algo = await getData('contacts');
     console.log(algo);
   };
 

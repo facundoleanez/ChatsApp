@@ -1,8 +1,3 @@
-export interface ConversationType {
-  id: string;
-  messages: MessageType[];
-}
-
 // States that renders screens
 export interface ConversType {
   uid: string;
@@ -23,4 +18,9 @@ export interface ContactType {
   uid: string;
   name: string;
   pic?: string;
+  status?: boolean;
+  lastTime?: {
+    message: string;
+    date: string;
+  };
 }

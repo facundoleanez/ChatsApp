@@ -1,10 +1,11 @@
-import React, {FC} from 'react';
+import React, {FC, useContext, useMemo} from 'react';
 import {View} from 'react-native';
 import styled from 'styled-components/native';
 import Avatar from '../data-display/Avatar';
 import {useNavigation} from '@react-navigation/native';
 import {RootTabParamList} from '../../navegation';
 import {MaterialBottomTabNavigationProp} from '@react-navigation/material-bottom-tabs';
+import {GlobalContext} from '../../App';
 
 const CardPill = styled.TouchableOpacity`
   margin: 7px;
@@ -36,24 +37,36 @@ const DateText = styled.Text`
 `;
 
 interface CardConversProps {
+  uid: string;
   srcImg?: string;
   name: string;
-  lastMessage: string;
-  date: string;
+  lastMessage?: string;
+  date?: Date;
 }
 
-const CardConvers: FC<CardConversProps> = ({name, lastMessage, date}) => {
+const CardConvers: FC<CardConversProps> = ({name, lastMessage, date, uid}) => {
+  const context = useContext(GlobalContext);
+  const setContext = useMemo(() => context?.setContext, [context]);
   const navigation =
     useNavigation<MaterialBottomTabNavigationProp<RootTabParamList>>();
+  const habldePress = () => {
+    if (setContext) {
+      setContext(prev => ({...prev, chatId: uid}));
+    }
+    navigation.navigate('Chat');
+  };
   return (
-    <CardPill onPress={() => navigation.navigate('Chat')}>
+    <CardPill onPress={habldePress}>
       <Avatar />
       <SectionView>
         <View>
           <Title>{name}</Title>
           <SubTitle>{lastMessage}</SubTitle>
         </View>
-        <DateText>{date}</DateText>
+        <DateText>
+          {date &&
+            date.getDate() + '/' + date.getMonth() + '/' + date.getFullYear()}
+        </DateText>
       </SectionView>
     </CardPill>
   );

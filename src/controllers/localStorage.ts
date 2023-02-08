@@ -4,8 +4,8 @@ import {MessageType} from '../utils/types';
 export const storeData = async (key: string, value: any) => {
   try {
     const jsonValue = JSON.stringify(value);
-    const res = await AsyncStorage.setItem(key, jsonValue);
-    return res;
+    await AsyncStorage.setItem(key, jsonValue);
+    console.log('storeData() Called with key:' + key + jsonValue);
   } catch (e) {
     return e;
     // saving error
