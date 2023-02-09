@@ -61,16 +61,17 @@ const Chat = () => {
 
   return (
     <ChatContainer>
-      {chat[0] ? (
+      {chat ? (
         <>
           <CardChatProfile />
           <MessageList>
-            {chat.map(message => (
-              <MessagePill
-                message={message}
-                key={JSON.stringify(message.date)}
-              />
-            ))}
+            {chat[0] &&
+              chat.map(message => (
+                <MessagePill
+                  message={message}
+                  key={JSON.stringify(message.date)}
+                />
+              ))}
           </MessageList>
           <InputSendMessage setChat={setChat} />
         </>

@@ -1,18 +1,12 @@
-import React, {
-  useCallback,
-  useContext,
-  useEffect,
-  useMemo,
-  useState,
-} from 'react';
+import React, {useCallback, useContext, useMemo, useState} from 'react';
 import {ScrollView, StyleSheet} from 'react-native';
 import styled, {useTheme} from 'styled-components/native';
 import CardConvers from '../components/cards/CardConversation';
 import Icon from 'react-native-vector-icons/FontAwesome5';
-import {useNavigation} from '@react-navigation/native';
+import {useFocusEffect, useNavigation} from '@react-navigation/native';
 import {MaterialBottomTabNavigationProp} from '@react-navigation/material-bottom-tabs';
 import {RootTabParamList} from '../navegation';
-import TestingStorage from '../utils/TestingStorage';
+// import TestingStorage from '../utils/TestingStorage';
 import {ContactType, ConversType} from '../utils/types';
 import {getData} from '../controllers/localStorage';
 import {GlobalContext} from '../App';
@@ -77,16 +71,18 @@ const Convers = () => {
           lastTime: cont.lastTime?.date || '',
         }));
         setConvers(converList);
-        setContext(prev => ({...prev, chatId: converList[0].uid}));
-      }
-      if (setContext && !chatId) {
+        if (setContext && !chatId) {
+          setContext(prev => ({...prev, chatId: converList[0].uid}));
+        }
       }
     }
   }, [setContext, chatId]);
 
-  useEffect(() => {
-    getConverList();
-  }, [getConverList, chatId]);
+  useFocusEffect(
+    useCallback(() => {
+      getConverList();
+    }, [getConverList]),
+  );
 
   return (
     <ContainerConver>
@@ -105,7 +101,7 @@ const Convers = () => {
         ) : (
           <SubTitle text={'Nothing to show'} />
         )}
-        <TestingStorage />
+        {/* <TestingStorage /> */}
       </ScrollView>
       <ButtonPlus
         style={styles.borderShadow}

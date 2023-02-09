@@ -22,7 +22,7 @@ const TestingStorage = () => {
 
   const handlePressDel = async () => {
     console.log('got');
-    const algo = await removeConversation('contacts');
+    const algo = await removeConversation('128');
     console.log(algo);
   };
   const handlePressGetAll = async () => {

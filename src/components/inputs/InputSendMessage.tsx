@@ -2,7 +2,8 @@ import React, {FC, useContext, useEffect, useMemo, useState} from 'react';
 import styled, {useTheme} from 'styled-components/native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import {GlobalContext} from '../../App';
-import {MessageType} from '../../utils/types';
+import {ContactType, MessageType} from '../../utils/types';
+import {getData, storeData} from '../../controllers/localStorage';
 
 const InputContainer = styled.View`
   background-color: ${({theme}) => theme.colors.primaryBackground};
@@ -39,9 +40,22 @@ interface InputSendMessageProps {
 const InputSendMessage: FC<InputSendMessageProps> = ({setChat}) => {
   const theme = useTheme();
   const [message, setMessage] = useState('');
+  const [contacts, setContacts] = useState<ContactType[]>([]);
   const context = useContext(GlobalContext);
   const uid = useMemo(() => context?.context.uid, [context]);
   const chatId = useMemo(() => context?.context.chatId, [context]);
+  const setContext = useMemo(() => context?.setContext, [context]);
+
+  const getContacts = async () => {
+    const cont = await getData('contacts');
+    if (cont) {
+      setContacts(cont);
+    }
+  };
+
+  useEffect(() => {
+    getContacts();
+  }, []);
 
   const handlePressSend = () => {
     if (uid && chatId && message) {
@@ -52,6 +66,19 @@ const InputSendMessage: FC<InputSendMessageProps> = ({setChat}) => {
         message: message,
       };
       setChat(prev => [...prev, newMessage]);
+      const newContactList = contacts.map(contact => {
+        if (contact.uid === chatId) {
+          return {
+            ...contact,
+            lastTime: {message, date: new Date()},
+          };
+        }
+        return contact;
+      });
+      storeData('contacts', newContactList);
+      if (setContext) {
+        setContext(prev => ({...prev, chatId}));
+      }
       setMessage('');
     }
   };
