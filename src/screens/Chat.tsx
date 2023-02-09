@@ -12,6 +12,8 @@ import InputSendMessage from '../components/inputs/InputSendMessage';
 import {GlobalContext} from '../App';
 import {getData, storeData} from '../controllers/localStorage';
 import {MessageType} from '../utils/types';
+import SubTitle from '../components/text/SubTitle';
+import {StyleSheet} from 'react-native';
 
 const ChatContainer = styled.View`
   width: 100%;
@@ -20,12 +22,25 @@ const ChatContainer = styled.View`
 const MessageList = styled.ScrollView`
   flex: 1;
 `;
-
+const TopMargin = styled.View`
+  background-color: ${({theme}) => theme.colors.primaryBackground};
+  border-bottom-left-radius: 32px;
+  border-bottom-right-radius: 32px;
+  border: 0px solid ${({theme}) => theme.colors.seccoindaryText};
+  border-bottom-width: 1px;
+  height: 32px;
+  border-left-width: 1px;
+  border-right-width: 1px;
+`;
+const styles = StyleSheet.create({
+  borderShadow: {
+    elevation: 20,
+  },
+});
 const Chat = () => {
+  const [chat, setChat] = useState<MessageType[]>([]);
   const context = useContext(GlobalContext);
   const chatId = useMemo(() => context?.context.chatId, [context]);
-
-  const [chat, setChat] = useState<MessageType[]>([]);
 
   const getChat = useCallback(async () => {
     if (chatId) {
@@ -46,14 +61,25 @@ const Chat = () => {
 
   return (
     <ChatContainer>
-      <CardChatProfile />
-      <MessageList>
-        {chat &&
-          chat.map(message => (
-            <MessagePill message={message} key={JSON.stringify(message.date)} />
-          ))}
-      </MessageList>
-      <InputSendMessage setChat={setChat} />
+      {chat[0] ? (
+        <>
+          <CardChatProfile />
+          <MessageList>
+            {chat.map(message => (
+              <MessagePill
+                message={message}
+                key={JSON.stringify(message.date)}
+              />
+            ))}
+          </MessageList>
+          <InputSendMessage setChat={setChat} />
+        </>
+      ) : (
+        <>
+          <TopMargin style={styles.borderShadow} />
+          <SubTitle text={'No chat selected'} />
+        </>
+      )}
     </ChatContainer>
   );
 };
