@@ -44,8 +44,9 @@ const Chat = () => {
 
   const getChat = useCallback(async () => {
     if (chatId) {
-      const chatConv = await getData(chatId);
-      setChat(chatConv);
+      const chatConv: MessageType[] = await getData(chatId);
+      const chats = chatConv.map(cha => ({...cha, date: new Date(cha.date)}));
+      setChat(chats);
     }
   }, [chatId]);
 
