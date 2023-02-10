@@ -62,7 +62,7 @@ const Chat = () => {
 
   return (
     <ChatContainer>
-      {chat ? (
+      {chat[0] ? (
         <>
           <CardChatProfile />
           <MessageList>

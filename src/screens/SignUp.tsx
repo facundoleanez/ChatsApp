@@ -1,5 +1,5 @@
 import React, {useState, useRef, FC} from 'react';
-import {TouchableOpacity, TextInput, View} from 'react-native';
+import {TouchableOpacity, TextInput} from 'react-native';
 import {TextInput as TextInputPaper} from 'react-native-paper';
 import styled, {useTheme} from 'styled-components/native';
 import MainButton from '../components/buttons/MainButton';
@@ -11,8 +11,8 @@ import {NavigationProp, ParamListBase} from '@react-navigation/native';
 // import {GlobalContext} from '../App';
 import auth from '@react-native-firebase/auth';
 import Loading from './Loading';
-import {SocialSigninButton} from './LogIn';
-import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+// import {SocialSigninButton} from './LogIn';
+// import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 interface SignUpProps {
   navigation: NavigationProp<ParamListBase>;
@@ -36,11 +36,11 @@ const ViewContainer = styled.View`
   justify-content: center;
   align-items: center;
 `;
-const Divider = styled.View`
-  border: solid 1px ${({theme}) => theme.colors.secondary};
-  width: 100%;
-  margin: 20px;
-`;
+// const Divider = styled.View`
+//   border: solid 1px ${({theme}) => theme.colors.secondary};
+//   width: 100%;
+//   margin: 20px;
+// `;
 //Texts
 const Title = styled.Text`
   font-size: 40px;
@@ -173,9 +173,9 @@ const SignUp: FC<SignUpProps> = ({navigation}) => {
 
       <MainButton title={'Register'} handlePress={handlePress} />
 
-      <Divider />
+      {/* <Divider /> */}
 
-      <View>
+      {/* <View>
         <SocialSigninButton>
           <Icon name="facebook" size={25} />
           <SubTitle>Signup with facebook</SubTitle>
@@ -184,7 +184,7 @@ const SignUp: FC<SignUpProps> = ({navigation}) => {
           <Icon name="gmail" size={25} />
           <SubTitle>Signup with gmail</SubTitle>
         </SocialSigninButton>
-      </View>
+      </View> */}
       <ViewContainer>
         <SubTitle>Already have an account?</SubTitle>
         <TextButton text={'Login'} handlePress={() => navigation.goBack()} />

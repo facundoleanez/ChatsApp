@@ -6,6 +6,7 @@ import {NavigationContainer} from '@react-navigation/native';
 import TabNavergator from './navegation';
 import auth, {FirebaseAuthTypes} from '@react-native-firebase/auth';
 import Loading from './screens/Loading';
+import {Provider} from 'react-native-paper';
 
 interface GlobalContextType {
   uid: string;
@@ -48,9 +49,11 @@ const App = () => {
     <GlobalContext.Provider value={{context, setContext}}>
       <ThemeProvider theme={chatAppTheme}>
         <NavigationContainer>
-          <SafeAreaView style={{flex: 1}}>
-            {initializing ? <Loading /> : <TabNavergator />}
-          </SafeAreaView>
+          <Provider>
+            <SafeAreaView style={{flex: 1}}>
+              {initializing ? <Loading /> : <TabNavergator />}
+            </SafeAreaView>
+          </Provider>
         </NavigationContainer>
       </ThemeProvider>
     </GlobalContext.Provider>

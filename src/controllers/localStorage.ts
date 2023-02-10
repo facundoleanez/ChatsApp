@@ -1,5 +1,4 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import {MessageType} from '../utils/types';
 
 export const storeData = async (key: string, value: any) => {
   try {
@@ -54,30 +53,12 @@ export const getAllKeysConver = async () => {
   }
 };
 
-export const sendMessageMerge = async (
-  uid: string,
-  contactId: string,
-  message: string,
-) => {
-  const messages: MessageType[] = [
-    {
-      date: new Date(),
-      senderId: uid,
-      recipentId: contactId,
-      message: message,
-    },
-  ];
+export const clearAll = async () => {
   try {
-    const jsonValue = JSON.stringify(messages);
-    const res = await AsyncStorage.setItem(contactId, jsonValue);
-    console.log(
-      'sendMessageMerge() Called with key:' +
-        contactId +
-        (res != null ? JSON.parse(res) : null),
-    );
-    return res != null ? JSON.parse(res) : null;
+    await AsyncStorage.clear();
   } catch (e) {
-    console.log(e);
-    return e;
+    // clear error
   }
+
+  console.log('Done.');
 };

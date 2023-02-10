@@ -17,7 +17,7 @@ interface AvatarProps {
   size?: number;
 }
 const Avatar: FC<AvatarProps> = ({
-  srcImg = require('../../imgs/profile.jpg'),
+  srcImg = require('../../imgs/profile.png'),
   size = 50,
 }) => {
   return <ImgStyled source={srcImg} size={size} />;

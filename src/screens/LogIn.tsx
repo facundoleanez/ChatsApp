@@ -1,5 +1,5 @@
 import React, {useState, useRef, FC} from 'react';
-import {View} from 'react-native';
+// import {View} from 'react-native';
 import {TouchableOpacity, TextInput} from 'react-native';
 import {TextInput as TextInputPaper} from 'react-native-paper';
 import styled, {useTheme} from 'styled-components/native';
@@ -9,7 +9,7 @@ import TextButton from '../components/buttons/TextButton';
 import {NavigationProp, ParamListBase} from '@react-navigation/native';
 import auth from '@react-native-firebase/auth';
 import Loading from './Loading';
-import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+// import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 interface LogInProps {
   navigation: NavigationProp<ParamListBase>;
@@ -33,11 +33,11 @@ const ViewContainer = styled.View`
   justify-content: center;
   align-items: center;
 `;
-const Divider = styled.View`
-  border: solid 1px ${({theme}) => theme.colors.secondary};
-  width: 100%;
-  margin: 20px;
-`;
+// const Divider = styled.View`
+//   border: solid 1px ${({theme}) => theme.colors.secondary};
+//   width: 100%;
+//   margin: 20px;
+// `;
 //Texts
 const Title = styled.Text`
   font-size: 40px;
@@ -158,16 +158,16 @@ const LogIn: FC<LogInProps> = ({navigation}) => {
           <Icons name="eye-off" size={15} />
         </TouchableOpacity>
       )}
-      <TextButton
+      {/* <TextButton
         text={'Forget your password?'}
         handlePress={() => console.log('clecked')}
-      />
+      /> */}
 
       <MainButton title={'Login'} handlePress={handlePress} />
 
-      <Divider />
+      {/* <Divider /> */}
 
-      <View>
+      {/* <View>
         <SocialSigninButton>
           <Icon name="facebook" size={25} />
           <SubTitle>Login with facebook</SubTitle>
@@ -176,7 +176,7 @@ const LogIn: FC<LogInProps> = ({navigation}) => {
           <Icon name="gmail" size={25} />
           <SubTitle>Login with gmail</SubTitle>
         </SocialSigninButton>
-      </View>
+      </View> */}
 
       <ViewContainer>
         <SubTitle>Do yoy have an account?</SubTitle>

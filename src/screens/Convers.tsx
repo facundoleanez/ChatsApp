@@ -6,7 +6,7 @@ import Icon from 'react-native-vector-icons/FontAwesome5';
 import {useFocusEffect, useNavigation} from '@react-navigation/native';
 import {MaterialBottomTabNavigationProp} from '@react-navigation/material-bottom-tabs';
 import {RootTabParamList} from '../navegation';
-// import TestingStorage from '../utils/TestingStorage';
+import TestingStorage from '../utils/TestingStorage';
 import {ContactType, ConversType} from '../utils/types';
 import {getData} from '../controllers/localStorage';
 import {GlobalContext} from '../App';
@@ -101,7 +101,7 @@ const Convers = () => {
         ) : (
           <SubTitle text={'Nothing to show'} />
         )}
-        {/* <TestingStorage /> */}
+        <TestingStorage />
       </ScrollView>
       <ButtonPlus
         style={styles.borderShadow}
