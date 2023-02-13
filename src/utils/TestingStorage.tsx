@@ -6,6 +6,7 @@ import {
   getData,
   removeConversation,
   storeData,
+  clearAll,
 } from '../controllers/localStorage';
 import {contactsList} from './constants';
 
@@ -30,6 +31,11 @@ const TestingStorage = () => {
     const algo = await getAllKeysConver();
     console.log(algo);
   };
+  const handlePressWipeData = async () => {
+    console.log('deleted');
+    const algo = await clearAll();
+    console.log(algo);
+  };
   return (
     <View>
       <Text>TestingStorage</Text>
@@ -44,6 +50,9 @@ const TestingStorage = () => {
       </Button>
       <Button onPress={handlePressGetAll}>
         <Text>getAll</Text>
+      </Button>
+      <Button onPress={handlePressWipeData}>
+        <Text>Wipe Data</Text>
       </Button>
     </View>
   );

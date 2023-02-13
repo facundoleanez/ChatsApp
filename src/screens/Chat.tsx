@@ -57,6 +57,7 @@ const Chat = () => {
   useEffect(() => {
     if (chatId) {
       storeData(chatId, chat);
+      console.log('Changed Chat Id to ' + chatId);
     }
   }, [chat, chatId]);
 

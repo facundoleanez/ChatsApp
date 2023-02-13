@@ -44,12 +44,13 @@ const InputSendMessage: FC<InputSendMessageProps> = ({setChat}) => {
   const context = useContext(GlobalContext);
   const uid = useMemo(() => context?.context.uid, [context]);
   const chatId = useMemo(() => context?.context.chatId, [context]);
-  const setContext = useMemo(() => context?.setContext, [context]);
+  // const setContext = useMemo(() => context?.setContext, [context]);
 
   const getContacts = async () => {
     const cont = await getData('contacts');
     if (cont) {
       setContacts(cont);
+      console.log(cont);
     }
   };
 
@@ -73,12 +74,10 @@ const InputSendMessage: FC<InputSendMessageProps> = ({setChat}) => {
             lastTime: {message, date: new Date()},
           };
         }
+        console.log(contact);
         return contact;
       });
       storeData('contacts', newContactList);
-      if (setContext) {
-        setContext(prev => ({...prev, chatId}));
-      }
       setMessage('');
     }
   };

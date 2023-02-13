@@ -47,7 +47,7 @@ const CardContact: FC<CardContactProps> = ({name, uid}) => {
   const handlePressStartConver = async () => {
     const already = await getData(uid);
     if (!already) {
-      storeData(uid, []);
+      storeData(uid, [{date: new Date()}]);
     }
     if (setContext) {
       setContext(prev => ({...prev, chatId: uid}));

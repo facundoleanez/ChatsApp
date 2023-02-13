@@ -75,6 +75,8 @@ const Convers = () => {
           setContext(prev => ({...prev, chatId: converList[0].uid}));
         }
       }
+    } else {
+      setConvers([]);
     }
   }, [setContext, chatId]);
 
