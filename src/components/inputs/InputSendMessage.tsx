@@ -56,6 +56,7 @@ const InputSendMessage: FC<InputSendMessageProps> = ({setChat}) => {
 
   useEffect(() => {
     getContacts();
+    console.log('as');
   }, []);
 
   const handlePressSend = () => {
@@ -71,13 +72,14 @@ const InputSendMessage: FC<InputSendMessageProps> = ({setChat}) => {
         if (contact.uid === chatId) {
           return {
             ...contact,
-            lastTime: {message, date: new Date()},
+            lastTime: {message, date: JSON.stringify(new Date())},
           };
         }
         console.log(contact);
         return contact;
       });
       storeData('contacts', newContactList);
+      setContacts(newContactList);
       setMessage('');
     }
   };
