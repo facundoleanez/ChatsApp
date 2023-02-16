@@ -4,7 +4,10 @@ import React, {
   useEffect,
   useMemo,
   useState,
+  useRef,
 } from 'react';
+import {ScrollView} from 'react-native';
+
 import MessagePill from '../components/data-display/MessagePill';
 import styled from 'styled-components/native';
 import CardChatProfile from '../components/cards/CardChatProfile';
@@ -41,7 +44,7 @@ const Chat = () => {
   const [chat, setChat] = useState<MessageType[]>([]);
   const context = useContext(GlobalContext);
   const chatId = useMemo(() => context?.context.chatId, [context]);
-
+  const scrollViewRef = useRef<ScrollView>(null);
   const getChat = useCallback(async () => {
     if (chatId) {
       const chatConv: MessageType[] = await getData(chatId);
@@ -54,6 +57,9 @@ const Chat = () => {
   }, [getChat]);
 
   useEffect(() => {
+    if (scrollViewRef.current) {
+      scrollViewRef.current.scrollToEnd({animated: true});
+    }
     if (chatId) {
       storeData(chatId, chat);
       console.log('Changed Chat Id to ' + chatId);
@@ -65,7 +71,7 @@ const Chat = () => {
       {chat[0] ? (
         <>
           <CardChatProfile />
-          <MessageList>
+          <MessageList ref={scrollViewRef}>
             {chat[0] &&
               chat.map(message => (
                 <MessagePill

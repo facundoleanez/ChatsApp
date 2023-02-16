@@ -62,12 +62,13 @@ const Button = styled.TouchableOpacity`
 `;
 
 const CardChatProfile = () => {
+  //Render states
   const [contact, setContact] = useState<ContactType>();
+  const [showMenu, setShowMenu] = useState(false);
+  //Context
   const context = useContext(GlobalContext);
   const chatId = useMemo(() => context?.context.chatId, [context]);
   const setContext = useMemo(() => context?.setContext, [context]);
-
-  const [showMenu, setShowMenu] = useState(false);
 
   const navigation =
     useNavigation<MaterialBottomTabNavigationProp<RootTabParamList>>();
