@@ -58,7 +58,7 @@ const InputSendMessage: FC<InputSendMessageProps> = ({setChat}) => {
         if (contact.uid === chatId) {
           return {
             ...contact,
-            lastTime: {message, date: JSON.stringify(new Date())},
+            lastTime: {message, date: new Date()},
           };
         }
         console.log(contact);
