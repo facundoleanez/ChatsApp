@@ -1,4 +1,5 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import {ContactType} from '../utils/types';
 
 export const storeData = async (key: string, value: any) => {
   try {
@@ -61,4 +62,16 @@ export const clearAll = async () => {
   }
 
   console.log('Done.');
+};
+
+export const deleteLastMessageContacts = async (uid: string) => {
+  const contacts: ContactType[] = await getData('contacts');
+  const newContacts = contacts.map(contact => {
+    if (contact.uid === uid) {
+      delete contact.lastTime;
+      return contact;
+    }
+    return contact;
+  });
+  storeData('contacts', newContacts);
 };

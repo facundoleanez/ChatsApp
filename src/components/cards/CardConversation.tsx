@@ -63,6 +63,7 @@ const CardConvers: FC<CardConversProps> = ({name, lastMessage, date, uid}) => {
           <Title>{name}</Title>
           <SubTitle>{lastMessage}</SubTitle>
         </View>
+
         <DateText>
           {date &&
             date.getDate() + '/' + date.getMonth() + '/' + date.getFullYear()}

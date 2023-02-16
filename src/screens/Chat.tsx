@@ -49,7 +49,6 @@ const Chat = () => {
       setChat(chats);
     }
   }, [chatId]);
-
   useEffect(() => {
     getChat();
   }, [getChat]);

@@ -48,7 +48,7 @@ const styles = StyleSheet.create({
   },
 });
 const Convers = () => {
-  const [convers, setConvers] = useState<ConversType[]>([]);
+  const [convers, setConvers] = useState<ConversType[]>();
   const context = useContext(GlobalContext);
   const setContext = useMemo(() => context?.setContext, [context]);
   const chatId = useMemo(() => context?.context.chatId, [context]);
@@ -90,7 +90,7 @@ const Convers = () => {
     <ContainerConver>
       <TopMargin style={styles.borderShadow} />
       <ScrollView>
-        {convers[0] ? (
+        {convers && convers[0] ? (
           convers.map(conver => (
             <CardConvers
               uid={conver.uid}

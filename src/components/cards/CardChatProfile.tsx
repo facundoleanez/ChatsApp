@@ -8,11 +8,22 @@ import React, {
 import {View} from 'react-native';
 import styled from 'styled-components/native';
 import Avatar from '../data-display/Avatar';
-import Icon from 'react-native-vector-icons/FontAwesome5';
+// import Icon from 'react-native-vector-icons/FontAwesome5';
 import {GlobalContext} from '../../App';
-import {getData} from '../../controllers/localStorage';
+import {
+  deleteLastMessageContacts,
+  getData,
+  removeConversation,
+} from '../../controllers/localStorage';
 import {ContactType} from '../../utils/types';
+import Icons from 'react-native-vector-icons/MaterialCommunityIcons';
+import {useNavigation} from '@react-navigation/native';
+import {MaterialBottomTabNavigationProp} from '@react-navigation/material-bottom-tabs';
+import {RootTabParamList} from '../../navegation';
 
+interface ToggleMenuProps {
+  show: boolean;
+}
 const CardContainer = styled.View`
   background-color: ${({theme}) => theme.colors.primaryBackground};
   border-bottom-left-radius: 32px;
@@ -26,6 +37,15 @@ const CardContainer = styled.View`
   justify-content: space-around;
   padding: 15px;
   margin-bottom: 20px;
+`;
+const ToggleMenu = styled.View<ToggleMenuProps>`
+  display: ${({show}) => (show ? 'flex' : 'none')};
+  background-color: ${({theme}) => theme.colors.primaryBackground};
+  border: 1px solid ${({theme}) => theme.colors.seccoindaryText};
+  border-radius: 15px;
+  position: absolute;
+  top: 100%;
+  left: 50%;
 `;
 
 const ProfileName = styled.Text`
@@ -42,10 +62,15 @@ const Button = styled.TouchableOpacity`
 `;
 
 const CardChatProfile = () => {
-  const initialStateContact = {uid: '', name: ''};
-  const [contact, setContact] = useState<ContactType>(initialStateContact);
+  const [contact, setContact] = useState<ContactType>();
   const context = useContext(GlobalContext);
   const chatId = useMemo(() => context?.context.chatId, [context]);
+  const setContext = useMemo(() => context?.setContext, [context]);
+
+  const [showMenu, setShowMenu] = useState(false);
+
+  const navigation =
+    useNavigation<MaterialBottomTabNavigationProp<RootTabParamList>>();
 
   const getLocalContacts = useCallback(async () => {
     const contactsLocal: ContactType[] = await getData('contacts');
@@ -57,19 +82,40 @@ const CardChatProfile = () => {
     getLocalContacts();
   }, [getLocalContacts]);
 
+  const handlePressDelete = () => {
+    if (chatId && setContext) {
+      deleteLastMessageContacts(chatId);
+      removeConversation(chatId);
+      navigation.navigate('Conversations');
+      setShowMenu(false);
+      setContext(prev => ({...prev, chatId: ''}));
+    }
+  };
+
   return (
     <CardContainer style={{elevation: 20}}>
       <Avatar />
       <View>
-        <ProfileName>{contact.name}</ProfileName>
+        {contact && <ProfileName>{contact.name}</ProfileName>}
         <Status>On line</Status>
       </View>
-      <Button>
+      {/* <Button>
         <Icon name="phone" size={20} />
       </Button>
       <Button>
         <Icon name="video" size={20} />
-      </Button>
+      </Button> */}
+      <View>
+        <Button onPress={() => setShowMenu(prev => !prev)}>
+          <Icons name={'dots-vertical'} size={25} />
+        </Button>
+
+        <ToggleMenu show={showMenu}>
+          <Button onPress={handlePressDelete}>
+            <Icons name={'delete'} size={20} />
+          </Button>
+        </ToggleMenu>
+      </View>
     </CardContainer>
   );
 };

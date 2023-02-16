@@ -1,16 +1,16 @@
 export const contactsList = [
   {
-    uid: '125',
+    uid: 'facu',
     name: 'Facundo Leanez',
     // pic: '../../imgs/facu.jpg',
   },
   {
-    uid: '173',
+    uid: 'seba',
     name: 'Sebastian Montagna',
     // pic: '../../imgs/seba.jpg',
   },
   {
-    uid: '128',
+    uid: 'bea',
     name: 'Beatriz Juarez',
     // pic: '../../imgs/bea.jpg',
   },

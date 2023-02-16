@@ -1,4 +1,4 @@
-import React, {FC, useContext, useEffect, useMemo, useState} from 'react';
+import React, {FC, useContext, useMemo, useState} from 'react';
 import styled, {useTheme} from 'styled-components/native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import {GlobalContext} from '../../App';
@@ -40,26 +40,26 @@ interface InputSendMessageProps {
 const InputSendMessage: FC<InputSendMessageProps> = ({setChat}) => {
   const theme = useTheme();
   const [message, setMessage] = useState('');
-  const [contacts, setContacts] = useState<ContactType[]>([]);
+  // const [contacts, setContacts] = useState<ContactType[]>([]);
   const context = useContext(GlobalContext);
   const uid = useMemo(() => context?.context.uid, [context]);
   const chatId = useMemo(() => context?.context.chatId, [context]);
   // const setContext = useMemo(() => context?.setContext, [context]);
 
-  const getContacts = async () => {
-    const cont = await getData('contacts');
-    if (cont) {
-      setContacts(cont);
-      console.log(cont);
-    }
-  };
+  // const getContacts = async () => {
+  //   const cont = await getData('contacts');
+  //   if (cont) {
+  //     setContacts(cont);
+  //     console.log(cont);
+  //   }
+  // };
 
-  useEffect(() => {
-    getContacts();
-    console.log('as');
-  }, []);
+  // useEffect(() => {
+  //   getContacts();
+  //   console.log('as');
+  // }, []);
 
-  const handlePressSend = () => {
+  const handlePressSend = async () => {
     if (uid && chatId && message) {
       const newMessage: MessageType = {
         date: new Date(),
@@ -67,6 +67,7 @@ const InputSendMessage: FC<InputSendMessageProps> = ({setChat}) => {
         recipentId: chatId,
         message: message,
       };
+      const contacts: ContactType[] = await getData('contacts');
       setChat(prev => [...prev, newMessage]);
       const newContactList = contacts.map(contact => {
         if (contact.uid === chatId) {
@@ -79,7 +80,7 @@ const InputSendMessage: FC<InputSendMessageProps> = ({setChat}) => {
         return contact;
       });
       storeData('contacts', newContactList);
-      setContacts(newContactList);
+      // setContacts(newContactList);
       setMessage('');
     }
   };

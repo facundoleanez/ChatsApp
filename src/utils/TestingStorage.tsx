@@ -38,7 +38,6 @@ const TestingStorage = () => {
   };
   return (
     <View>
-      <Text>TestingStorage</Text>
       <Button onPress={handlePressSave}>
         <Text>save</Text>
       </Button>
