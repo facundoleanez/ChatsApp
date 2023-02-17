@@ -33,7 +33,9 @@ const TabNavergator = () => {
           <TopBar />
           <Tab.Navigator
             initialRouteName="Conversations"
-            barStyle={{backgroundColor: theme.colors.primaryBackground}}
+            barStyle={{
+              backgroundColor: theme.colors.primaryBackground,
+            }}
             activeColor={theme.colors.tertiary}
             inactiveColor={theme.colors.secondary}
             labeled={false}>

@@ -70,7 +70,12 @@ const Convers = () => {
           lastMessage: cont.lastTime?.message || '',
           lastTime: cont.lastTime?.date || '',
         }));
-        setConvers(converList);
+        setConvers(
+          converList.sort(
+            (a, b) =>
+              new Date(b.lastTime).getTime() - new Date(a.lastTime).getTime(),
+          ),
+        );
         if (setContext && !chatId) {
           setContext(prev => ({...prev, chatId: converList[0].uid}));
         }
