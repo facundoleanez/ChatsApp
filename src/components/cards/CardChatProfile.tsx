@@ -90,6 +90,7 @@ const CardChatProfile = () => {
       navigation.navigate('Conversations');
       setShowMenu(false);
       setContext(prev => ({...prev, chatId: ''}));
+      console.log(chatId);
     }
   };
 

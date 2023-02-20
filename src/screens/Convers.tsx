@@ -1,11 +1,8 @@
 import React, {useCallback, useContext, useMemo, useState} from 'react';
 import {ScrollView, StyleSheet} from 'react-native';
-import styled, {useTheme} from 'styled-components/native';
+import styled from 'styled-components/native';
 import CardConvers from '../components/cards/CardConversation';
-import Icon from 'react-native-vector-icons/FontAwesome5';
-import {useFocusEffect, useNavigation} from '@react-navigation/native';
-import {MaterialBottomTabNavigationProp} from '@react-navigation/material-bottom-tabs';
-import {RootTabParamList} from '../navegation';
+import {useFocusEffect} from '@react-navigation/native';
 import TestingStorage from '../utils/TestingStorage';
 import {ContactType, ConversType} from '../utils/types';
 import {getData} from '../controllers/localStorage';
@@ -17,19 +14,6 @@ const ContainerConver = styled.View`
   border-bottom-width: 1px;
   /* border-top-width: 1px; */
   flex: 1;
-`;
-const ButtonPlus = styled.TouchableOpacity`
-  border: 2px solid ${({theme}) => theme.colors.seccoindaryText};
-  position: absolute;
-  height: 45px;
-  width: 45px;
-  border-radius: 30px;
-  background-color: ${({theme}) => theme.colors.primaryBackground};
-  bottom: 0;
-  right: 0;
-  align-items: center;
-  justify-content: center;
-  margin: 20px;
 `;
 
 const TopMargin = styled.View`
@@ -52,9 +36,6 @@ const Convers = () => {
   const context = useContext(GlobalContext);
   const setContext = useMemo(() => context?.setContext, [context]);
   const chatId = useMemo(() => context?.context.chatId, [context]);
-  const theme = useTheme();
-  const navigation =
-    useNavigation<MaterialBottomTabNavigationProp<RootTabParamList>>();
 
   const getConverList = useCallback(async () => {
     const contactList: ContactType[] = await getData('contacts');
@@ -110,11 +91,6 @@ const Convers = () => {
         )}
         <TestingStorage />
       </ScrollView>
-      <ButtonPlus
-        style={styles.borderShadow}
-        onPress={() => navigation.navigate('Contacts')}>
-        <Icon name="plus" size={20} color={theme.colors.seccoindaryText} />
-      </ButtonPlus>
     </ContainerConver>
   );
 };

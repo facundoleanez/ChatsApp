@@ -66,6 +66,13 @@ const Chat = () => {
     }
   }, [chat, chatId]);
 
+  // useEffect(() => {
+  //   if (chatId) {
+  //     setChat([]);
+  //   }
+  //   console.log(chatId);
+  // }, [chatId]);
+
   return (
     <ChatContainer>
       {chat[0] ? (
