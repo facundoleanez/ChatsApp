@@ -24,3 +24,18 @@ export interface ContactType {
     date: string;
   };
 }
+
+export interface UserType {
+  email: string;
+  name: string;
+  pic: string;
+  username: string;
+}
+
+export enum UsersFieldsType {
+  email = 'email',
+  name = 'name',
+  pic = 'pic,',
+  username = 'username',
+  contacts = 'contacts',
+}

@@ -3,7 +3,7 @@ import {ScrollView, StyleSheet} from 'react-native';
 import styled from 'styled-components/native';
 import CardConvers from '../components/cards/CardConversation';
 import {useFocusEffect} from '@react-navigation/native';
-import TestingStorage from '../utils/TestingStorage';
+// import TestingStorage from '../utils/TestingStorage';
 import {ContactType, ConversType} from '../utils/types';
 import {getData} from '../controllers/localStorage';
 import {GlobalContext} from '../App';
@@ -89,7 +89,7 @@ const Convers = () => {
         ) : (
           <SubTitle text={'Nothing to show'} />
         )}
-        <TestingStorage />
+        {/* <TestingStorage /> */}
       </ScrollView>
     </ContainerConver>
   );

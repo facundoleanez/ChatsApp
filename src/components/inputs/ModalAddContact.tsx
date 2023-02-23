@@ -1,6 +1,10 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useState, useContext, useMemo} from 'react';
 import {TextInput} from 'react-native-paper';
 import styled, {useTheme} from 'styled-components/native';
+import {GlobalContext} from '../../App';
+import {addContact} from '../../controllers/actions';
+import Loading from '../../screens/Loading';
+import TestingStorage from '../../utils/TestingStorage';
 import MainButton from '../buttons/MainButton';
 import SubTitle from '../text/SubTitle';
 
@@ -21,10 +25,14 @@ const FormSection = styled.View`
 `;
 
 const ModalAddContact = () => {
+  //Context
+  const context = useContext(GlobalContext);
+  const uid = useMemo(() => context?.context.uid, [context]);
   //Form States
   const [email, setEmail] = useState('');
   const [username, setUsername] = useState('');
   //Render States
+  const [loading, setLoading] = useState(false);
   const [isDisabledEmail, setIsDisabledEmail] = useState(false);
   const [isDisableUsername, setIsDisableUsername] = useState(false);
 
@@ -43,8 +51,19 @@ const ModalAddContact = () => {
     }
   }, [email, username]);
 
+  const handlePressSend = async () => {
+    setLoading(true);
+    if (uid) {
+      await addContact(uid, email);
+      setEmail('');
+      setUsername('');
+      setLoading(false);
+    }
+  };
+
   return (
     <ModalContainer>
+      {loading && <Loading />}
       <Title>Add a contact</Title>
       <FormSection>
         <TextInput
@@ -85,11 +104,9 @@ const ModalAddContact = () => {
           underlineColor={theme.colors.secondary}
           // onSubmitEditing={handleFocus}
         />
+        <TestingStorage />
       </FormSection>
-      <MainButton
-        title={'Send request'}
-        handlePress={() => console.log('pressed')}
-      />
+      <MainButton title={'Send request'} handlePress={handlePressSend} />
     </ModalContainer>
   );
 };

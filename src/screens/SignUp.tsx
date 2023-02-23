@@ -9,8 +9,8 @@ import TextButton from '../components/buttons/TextButton';
 // import {useNavigation} from '@react-navigation/core';
 import {NavigationProp, ParamListBase} from '@react-navigation/native';
 // import {GlobalContext} from '../App';
-import auth from '@react-native-firebase/auth';
 import Loading from './Loading';
+import {createAuthUser} from '../controllers/firebaseAuth';
 // import {SocialSigninButton} from './LogIn';
 // import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
@@ -68,32 +68,32 @@ const SignUp: FC<SignUpProps> = ({navigation}) => {
 
   // const navigation = useNavigation<RootTabParamList>();
 
-  const handlePress = () => {
+  const handlePress = async () => {
     setProssesing(true);
-    console.log(email, password);
-    setEmail('');
-    setPassword('');
-    setPassword2('');
-    auth()
-      .createUserWithEmailAndPassword(email, password)
-      .then(() => {
-        console.log('User account created & signed in!');
+    try {
+      if (email && password) {
+        const res = await createAuthUser(email, password);
+        console.log(res);
+        setEmail('');
+        setPassword('');
+        setPassword2('');
         setProssesing(false);
-      })
-      .catch(error => {
-        if (error.code === 'auth/email-already-in-use') {
-          console.log('That email address is already in use!');
-          setProssesing(false);
-        }
+      }
+    } catch (error) {
+      // if (error.code === 'auth/email-already-in-use') {
+      //   console.log('That email address is already in use!');
+      //   setProssesing(false);
+      // }
 
-        if (error.code === 'auth/invalid-email') {
-          console.log('That email address is invalid!');
-          setProssesing(false);
-        }
-        setProssesing(false);
-        console.error(error);
-      });
+      // if (error.code === 'auth/invalid-email') {
+      //   console.log('That email address is invalid!');
+      //   setProssesing(false);
+      // }
+      setProssesing(false);
+      console.error(error);
+    }
   };
+
   const handleFocus = () => {
     inputPasswordRef.current?.focus();
   };

@@ -3,9 +3,9 @@ import React from 'react';
 import {Button} from 'react-native-paper';
 import {
   getAllKeysConver,
-  getData,
-  removeConversation,
-  storeData,
+  getDataLocal,
+  removeConversationLocal,
+  storeDataLocal,
   clearAll,
 } from '../controllers/localStorage';
 import {contactsList} from './constants';
@@ -13,17 +13,17 @@ import {contactsList} from './constants';
 const TestingStorage = () => {
   const handlePressSave = () => {
     console.log('saved');
-    const algo = storeData('contacts', contactsList);
+    const algo = storeDataLocal('contacts', contactsList);
     console.log(algo);
   };
   const handlePressGet = async () => {
-    const algo = await getData('contacts');
+    const algo = await getDataLocal('contactList');
     console.log(algo);
   };
 
   const handlePressDel = async () => {
     console.log('got');
-    const algo = await removeConversation('128');
+    const algo = await removeConversationLocal('128');
     console.log(algo);
   };
   const handlePressGetAll = async () => {
