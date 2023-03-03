@@ -16,14 +16,14 @@ export const getUserByEmail = async (email: string) => {
         pic: res.docs[0].data().pic,
       };
       return contact;
-    } else {
-      return null;
     }
+    return null;
   } catch (error) {
     console.error(error);
     return null;
   }
 };
+//TODO: send request with username
 // export const getUserIdByUsername = async (username: string) => {
 //   try {
 //     const res = await firestore()

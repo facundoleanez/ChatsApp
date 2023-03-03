@@ -62,7 +62,6 @@ const InputSendMessage: FC<InputSendMessageProps> = ({setChat}) => {
               lastTime: {message, date: new Date()},
             };
           }
-          console.log(contact);
           return contact;
         });
         saveToStorage('contactList', newContactList);

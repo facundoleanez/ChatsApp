@@ -1,12 +1,6 @@
-import React, {
-  useEffect,
-  useState,
-  //  useContext, useMemo,
-  FC,
-} from 'react';
+import React, {useEffect, useState, FC} from 'react';
 import {TextInput} from 'react-native-paper';
 import styled, {useTheme} from 'styled-components/native';
-// import {GlobalContext} from '../../App';
 import {addContact} from '../../controllers/actions';
 import Loading from '../../screens/Loading';
 import {ContactType} from '../../utils/types';
@@ -39,13 +33,9 @@ const ModalAddContact: FC<ModalAddContactProps> = ({
   setContacts,
   setShowModal,
 }) => {
-  //Context
-  // const context = useContext(GlobalContext);
-  // const uid = useMemo(() => context?.context.uid, [context]);
-  //Form States
   const [email, setEmail] = useState('');
   const [username, setUsername] = useState('');
-  //Render States
+
   const [loading, setLoading] = useState(false);
   const [showAlert, setShowAlert] = useState(false);
   const [isDisabledEmail, setIsDisabledEmail] = useState(false);
@@ -82,10 +72,11 @@ const ModalAddContact: FC<ModalAddContactProps> = ({
         'Location: components/inputs/ModalAddContacts handlePressSend()',
         error,
       );
+    } finally {
+      setEmail('');
+      setUsername('');
+      setLoading(false);
     }
-    setEmail('');
-    setUsername('');
-    setLoading(false);
   };
 
   useEffect(() => {

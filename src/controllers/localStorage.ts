@@ -1,6 +1,5 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {ContactType} from '../utils/types';
-// import {ContactType} from '../utils/types';
 
 export const saveToStorage = async (key: string, value: any) => {
   try {
@@ -10,7 +9,6 @@ export const saveToStorage = async (key: string, value: any) => {
   } catch (e) {
     console.log(e);
     return e;
-    // saving error
   }
 };
 
@@ -49,7 +47,7 @@ export const clearAll = async () => {
   try {
     await AsyncStorage.clear();
   } catch (e) {
-    // clear error
+    console.log(e);
   }
   console.log('Done.');
 };

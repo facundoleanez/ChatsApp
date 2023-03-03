@@ -3,7 +3,6 @@ import {ScrollView, StyleSheet} from 'react-native';
 import styled from 'styled-components/native';
 import CardConvers from '../components/cards/CardConversation';
 import {useFocusEffect} from '@react-navigation/native';
-// import TestingStorage from '../utils/TestingStorage';
 import {ContactType, ConversType} from '../utils/types';
 import {getFromStorage} from '../controllers/localStorage';
 import {GlobalContext} from '../App';
@@ -12,7 +11,6 @@ import SubTitle from '../components/text/SubTitle';
 const ContainerConver = styled.View`
   border: 0px solid ${({theme}) => theme.colors.seccoindaryText};
   border-bottom-width: 1px;
-  /* border-top-width: 1px; */
   flex: 1;
 `;
 
@@ -94,7 +92,6 @@ const Convers = () => {
         ) : (
           <SubTitle text={'Nothing to show'} />
         )}
-        {/* <TestingStorage /> */}
       </ScrollView>
     </ContainerConver>
   );
