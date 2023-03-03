@@ -1,16 +1,22 @@
 import firestore from '@react-native-firebase/firestore';
-import {UsersFieldsType} from '../utils/types';
+import {ContactType, UsersFieldsType} from '../utils/types';
 
 //Returns uid or null depending if email or username exist
-export const getUserIdByEmail = async (email: string) => {
+export const getUserByEmail = async (email: string) => {
   try {
     const res = await firestore()
       .collection('Users')
       .where('email', '==', email)
       .limit(1)
       .get();
+    console.log(res.docs[0]);
     if (res.docs[0]) {
-      return res.docs[0].id;
+      const contact: ContactType = {
+        uid: res.docs[0].id,
+        name: res.docs[0].data().name,
+        pic: res.docs[0].data().pic,
+      };
+      return contact;
     } else {
       return null;
     }
@@ -19,23 +25,23 @@ export const getUserIdByEmail = async (email: string) => {
     return null;
   }
 };
-export const getUserIdByUsername = async (username: string) => {
-  try {
-    const res = await firestore()
-      .collection('Users')
-      .where('username', '==', username)
-      .limit(1)
-      .get();
-    if (res.docs[0]) {
-      return res.docs[0].id;
-    } else {
-      return null;
-    }
-  } catch (error) {
-    console.error(error);
-    return null;
-  }
-};
+// export const getUserIdByUsername = async (username: string) => {
+//   try {
+//     const res = await firestore()
+//       .collection('Users')
+//       .where('username', '==', username)
+//       .limit(1)
+//       .get();
+//     if (res.docs[0]) {
+//       return res.docs[0].id;
+//     } else {
+//       return null;
+//     }
+//   } catch (error) {
+//     console.error(error);
+//     return null;
+//   }
+// };
 
 //Creates an User document in Users Collections and return the response or null
 export const createUserDoc = async (

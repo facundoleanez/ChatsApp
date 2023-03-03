@@ -3,11 +3,12 @@ import {StyleSheet} from 'react-native';
 import styled, {useTheme} from 'styled-components/native';
 import CardContact from '../components/cards/CardContact';
 import SubTitle from '../components/text/SubTitle';
-import {getData} from '../controllers/localStorage';
+import {getDataLocal} from '../controllers/localStorage';
 import {ContactType} from '../utils/types';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import {Modal, Portal} from 'react-native-paper';
 import ModalAddContact from '../components/inputs/ModalAddContact';
+//import TestingStorage from '../utils/TestingStorage';
 
 const Container = styled.View`
   border: 0px solid ${({theme}) => theme.colors.seccoindaryText};
@@ -53,9 +54,13 @@ const Contacts = () => {
   const theme = useTheme();
 
   const getContacts = async () => {
-    const cont = await getData('contacts');
-    if (cont) {
-      setContacts(cont);
+    try {
+      const cont = await getDataLocal('contactList');
+      if (cont) {
+        setContacts(cont);
+      }
+    } catch (error) {
+      console.log('Location: Contacts screen, getContacts()', error);
     }
   };
 
@@ -70,7 +75,7 @@ const Contacts = () => {
         contacts.map(contact => (
           <CardContact
             key={contact.uid}
-            uid={contact.uid}
+            contactId={contact.uid}
             name={contact.name}
           />
         ))
@@ -82,7 +87,10 @@ const Contacts = () => {
         <Modal
           visible={isModalVisible}
           onDismiss={() => setIsModalVisible(false)}>
-          <ModalAddContact />
+          <ModalAddContact
+            setContacts={setContacts}
+            setShowModal={setIsModalVisible}
+          />
         </Modal>
       </Portal>
       <ButtonPlus

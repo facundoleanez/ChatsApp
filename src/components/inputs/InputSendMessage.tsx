@@ -3,7 +3,7 @@ import styled, {useTheme} from 'styled-components/native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import {GlobalContext} from '../../App';
 import {ContactType, MessageType} from '../../utils/types';
-import {getData, storeData} from '../../controllers/localStorage';
+import {getDataLocal, storeDataLocal} from '../../controllers/localStorage';
 
 const InputContainer = styled.View`
   background-color: ${({theme}) => theme.colors.primaryBackground};
@@ -45,27 +45,31 @@ const InputSendMessage: FC<InputSendMessageProps> = ({setChat}) => {
   const chatId = useMemo(() => context?.context.chatId, [context]);
 
   const handlePressSend = async () => {
-    if (uid && chatId && message) {
-      const newMessage: MessageType = {
-        date: new Date(),
-        senderId: uid,
-        recipentId: chatId,
-        message: message,
-      };
-      const contacts: ContactType[] = await getData('contacts');
-      setChat(prev => [...prev, newMessage]);
-      const newContactList = contacts.map(contact => {
-        if (contact.uid === chatId) {
-          return {
-            ...contact,
-            lastTime: {message, date: new Date()},
-          };
-        }
-        console.log(contact);
-        return contact;
-      });
-      storeData('contacts', newContactList);
-      setMessage('');
+    try {
+      if (uid && chatId && message) {
+        const newMessage: MessageType = {
+          date: new Date(),
+          senderId: uid,
+          recipentId: chatId,
+          message: message,
+        };
+        const contacts: ContactType[] = await getDataLocal('contactList');
+        setChat(prev => [...prev, newMessage]);
+        const newContactList = contacts.map(contact => {
+          if (contact.uid === chatId) {
+            return {
+              ...contact,
+              lastTime: {message, date: new Date()},
+            };
+          }
+          console.log(contact);
+          return contact;
+        });
+        storeDataLocal('contactList', newContactList);
+        setMessage('');
+      }
+    } catch (error) {
+      console.log(error);
     }
   };
 

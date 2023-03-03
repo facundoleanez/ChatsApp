@@ -1,11 +1,17 @@
-import React, {useEffect, useState, useContext, useMemo} from 'react';
+import React, {
+  useEffect,
+  useState,
+  //  useContext, useMemo,
+  FC,
+} from 'react';
 import {TextInput} from 'react-native-paper';
 import styled, {useTheme} from 'styled-components/native';
-import {GlobalContext} from '../../App';
+// import {GlobalContext} from '../../App';
 import {addContact} from '../../controllers/actions';
 import Loading from '../../screens/Loading';
-import TestingStorage from '../../utils/TestingStorage';
+import {ContactType} from '../../utils/types';
 import MainButton from '../buttons/MainButton';
+import Alert from '../text/Alert';
 import SubTitle from '../text/SubTitle';
 
 const ModalContainer = styled.View`
@@ -24,15 +30,24 @@ const FormSection = styled.View`
   margin: 40px;
 `;
 
-const ModalAddContact = () => {
+interface ModalAddContactProps {
+  setContacts: React.Dispatch<React.SetStateAction<ContactType[]>>;
+  setShowModal: React.Dispatch<React.SetStateAction<boolean>>;
+}
+
+const ModalAddContact: FC<ModalAddContactProps> = ({
+  setContacts,
+  setShowModal,
+}) => {
   //Context
-  const context = useContext(GlobalContext);
-  const uid = useMemo(() => context?.context.uid, [context]);
+  // const context = useContext(GlobalContext);
+  // const uid = useMemo(() => context?.context.uid, [context]);
   //Form States
   const [email, setEmail] = useState('');
   const [username, setUsername] = useState('');
   //Render States
   const [loading, setLoading] = useState(false);
+  const [showAlert, setShowAlert] = useState(false);
   const [isDisabledEmail, setIsDisabledEmail] = useState(false);
   const [isDisableUsername, setIsDisableUsername] = useState(false);
 
@@ -53,13 +68,34 @@ const ModalAddContact = () => {
 
   const handlePressSend = async () => {
     setLoading(true);
-    if (uid) {
-      await addContact(uid, email);
-      setEmail('');
-      setUsername('');
-      setLoading(false);
+    try {
+      const newContactAdded = await addContact(email);
+      if (newContactAdded) {
+        setContacts(prev => [...prev, newContactAdded]);
+        setLoading(false);
+        setShowModal(false);
+      } else {
+        setShowAlert(true);
+      }
+    } catch (error) {
+      console.log(
+        'Location: components/inputs/ModalAddContacts handlePressSend()',
+        error,
+      );
     }
+    setEmail('');
+    setUsername('');
+    setLoading(false);
   };
+
+  useEffect(() => {
+    let time = setTimeout(() => {
+      setShowAlert(false);
+    }, 3000);
+    return () => {
+      clearTimeout(time);
+    };
+  }, [showAlert]);
 
   return (
     <ModalContainer>
@@ -104,8 +140,10 @@ const ModalAddContact = () => {
           underlineColor={theme.colors.secondary}
           // onSubmitEditing={handleFocus}
         />
-        <TestingStorage />
       </FormSection>
+      {showAlert && (
+        <Alert text={'Email or username not found'} type={'danger'} />
+      )}
       <MainButton title={'Send request'} handlePress={handlePressSend} />
     </ModalContainer>
   );

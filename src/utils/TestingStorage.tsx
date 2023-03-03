@@ -9,6 +9,18 @@ import {
   clearAll,
 } from '../controllers/localStorage';
 import {contactsList} from './constants';
+import styled from 'styled-components/native';
+import {getUserByEmail} from '../controllers/firebaseFirestore';
+
+const ButtonTrigger = styled.TouchableOpacity`
+  height: 100px;
+  width: 100px;
+  background-color: #bb4550;
+  border-radius: 50px;
+  align-items: center;
+  justify-content: center;
+  align-self: center;
+`;
 
 const TestingStorage = () => {
   const handlePressSave = () => {
@@ -36,6 +48,9 @@ const TestingStorage = () => {
     const algo = await clearAll();
     console.log(algo);
   };
+  const handleTriggerPress = () => {
+    getUserByEmail('caca');
+  };
   return (
     <View>
       <Button onPress={handlePressSave}>
@@ -53,6 +68,9 @@ const TestingStorage = () => {
       <Button onPress={handlePressWipeData}>
         <Text>Wipe Data</Text>
       </Button>
+      <ButtonTrigger onPress={handleTriggerPress}>
+        <Text>Trigger</Text>
+      </ButtonTrigger>
     </View>
   );
 };

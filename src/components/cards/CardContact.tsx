@@ -6,7 +6,7 @@ import {RootTabParamList} from '../../navegation';
 import {MaterialBottomTabNavigationProp} from '@react-navigation/material-bottom-tabs';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import {TouchableOpacity} from 'react-native';
-import {getData, storeData} from '../../controllers/localStorage';
+import {getDataLocal, storeDataLocal} from '../../controllers/localStorage';
 import {GlobalContext} from '../../App';
 
 const CardPill = styled.TouchableOpacity`
@@ -34,25 +34,34 @@ const Title = styled.Text`
 interface CardContactProps {
   srcImg?: string;
   name: string;
-  uid: string;
+  contactId: string;
 }
 
-const CardContact: FC<CardContactProps> = ({name, uid}) => {
+const CardContact: FC<CardContactProps> = ({name, contactId}) => {
   const navigation =
     useNavigation<MaterialBottomTabNavigationProp<RootTabParamList>>();
   const theme = useTheme();
+  // Global context
   const context = useContext(GlobalContext);
   const setContext = useMemo(() => context?.setContext, [context]);
 
   const handlePressStartConver = async () => {
-    const already = await getData(uid);
-    if (!already) {
-      storeData(uid, [{date: new Date()}]);
+    try {
+      const already = await getDataLocal(contactId);
+      if (!already && setContext) {
+        await storeDataLocal(contactId, [{date: new Date()}]);
+        setContext(prev => ({...prev, chatId: contactId}));
+        navigation.navigate('Chat');
+      } else if (setContext) {
+        setContext(prev => ({...prev, chatId: contactId}));
+        navigation.navigate('Chat');
+      }
+    } catch (error) {
+      console.log(
+        'Location Components/Cards/CardContact handlePRessStartConver()',
+        error,
+      );
     }
-    if (setContext) {
-      setContext(prev => ({...prev, chatId: uid}));
-    }
-    navigation.navigate('Chat');
   };
   return (
     <CardPill>

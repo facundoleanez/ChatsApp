@@ -12,8 +12,8 @@ import Avatar from '../data-display/Avatar';
 import {GlobalContext} from '../../App';
 import {
   deleteLastMessageContacts,
-  getData,
-  removeConversation,
+  getDataLocal,
+  removeConversationLocal,
 } from '../../controllers/localStorage';
 import {ContactType} from '../../utils/types';
 import Icons from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -74,9 +74,15 @@ const CardChatProfile = () => {
     useNavigation<MaterialBottomTabNavigationProp<RootTabParamList>>();
 
   const getLocalContacts = useCallback(async () => {
-    const contactsLocal: ContactType[] = await getData('contacts');
-    const currentContact = contactsLocal.filter(cont => cont.uid === chatId)[0];
-    setContact(currentContact);
+    try {
+      const contactsLocal: ContactType[] = await getDataLocal('contactList');
+      const currentContact = contactsLocal.filter(
+        cont => cont.uid === chatId,
+      )[0];
+      setContact(currentContact);
+    } catch (error) {
+      console.log('Location: Components/cards/CardChatProfile', error);
+    }
   }, [chatId]);
 
   useEffect(() => {
@@ -86,7 +92,7 @@ const CardChatProfile = () => {
   const handlePressDelete = () => {
     if (chatId && setContext) {
       deleteLastMessageContacts(chatId);
-      removeConversation(chatId);
+      removeConversationLocal(chatId);
       navigation.navigate('Conversations');
       setShowMenu(false);
       setContext(prev => ({...prev, chatId: ''}));
