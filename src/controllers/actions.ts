@@ -1,11 +1,11 @@
-// import {getDataLocal, storeDataLocal} from './localStorage';
+// import {getFromStorage, saveToStorage} from './localStorage';
 
 import {getUserByEmail} from './firebaseFirestore';
-import {getDataLocal, storeDataLocal} from './localStorage';
+import {getFromStorage, saveToStorage} from './localStorage';
 
 // export const addContactList = async (uid: string, contactId: string) => {
 //   try {
-//     const oldContactList = await getDataLocal('contactList');
+//     const oldContactList = await getFromStorage('contactList');
 //     if (oldContactList) {
 //       console.log(oldContactList);
 //       const newList: string[] = oldContactList.push(contactId);
@@ -23,24 +23,24 @@ export const addContact = async (email: string) => {
   try {
     const newContact = await getUserByEmail(email);
     if (newContact) {
-      const oldContactList = await getDataLocal('contactList');
+      const oldContactList = await getFromStorage('contactList');
       if (oldContactList) {
         const newContactList = [...oldContactList, newContact];
-        await storeDataLocal('contactList', newContactList);
+        await saveToStorage('contactList', newContactList);
       } else {
-        await storeDataLocal('contactList', [newContact]);
+        await saveToStorage('contactList', [newContact]);
       }
       return newContact;
     } else {
       return null;
     }
     // if (contactUid) {
-    //   const oldContactList = await getDataLocal('contactList');
+    //   const oldContactList = await getFromStorage('contactList');
     //   const newContactList = [...oldContactList, contactUid];
-    //   storeDataLocal('contactList', newContactList);
+    //   saveToStorage('contactList', newContactList);
     //   setFieldUser(uid, UsersFieldsType.contacts, newContactList);
     // } else if (contactUid) {
-    //   storeDataLocal('contactList', [contactUid]);
+    //   saveToStorage('contactList', [contactUid]);
     //   setFieldUser(uid, UsersFieldsType.contacts, [contactUid]);
     // } else {
     //   return null;

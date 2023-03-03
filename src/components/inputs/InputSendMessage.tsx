@@ -3,7 +3,7 @@ import styled, {useTheme} from 'styled-components/native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import {GlobalContext} from '../../App';
 import {ContactType, MessageType} from '../../utils/types';
-import {getDataLocal, storeDataLocal} from '../../controllers/localStorage';
+import {getFromStorage, saveToStorage} from '../../controllers/localStorage';
 
 const InputContainer = styled.View`
   background-color: ${({theme}) => theme.colors.primaryBackground};
@@ -53,7 +53,7 @@ const InputSendMessage: FC<InputSendMessageProps> = ({setChat}) => {
           recipentId: chatId,
           message: message,
         };
-        const contacts: ContactType[] = await getDataLocal('contactList');
+        const contacts: ContactType[] = await getFromStorage('contactList');
         setChat(prev => [...prev, newMessage]);
         const newContactList = contacts.map(contact => {
           if (contact.uid === chatId) {
@@ -65,7 +65,7 @@ const InputSendMessage: FC<InputSendMessageProps> = ({setChat}) => {
           console.log(contact);
           return contact;
         });
-        storeDataLocal('contactList', newContactList);
+        saveToStorage('contactList', newContactList);
         setMessage('');
       }
     } catch (error) {

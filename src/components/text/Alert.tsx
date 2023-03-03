@@ -5,14 +5,14 @@ interface ContainerProps {
   type: string;
 }
 const Container = styled.View<ContainerProps>`
-  background-color: #f8d7da;
-  border: solid 1px #bb4550;
+  background-color: ${({theme}) => theme.colors.danger};
+  border: solid 1px ${({theme}) => theme.colors.dangerText};
   border-radius: 10px;
   padding: 15px;
   margin: 10px;
 `;
 const TextAlert = styled.Text`
-  color: #bb4550;
+  color: ${({theme}) => theme.colors.dangerText};
   font-size: 18px;
 `;
 interface AlertProps {

@@ -13,7 +13,7 @@ import styled from 'styled-components/native';
 import CardChatProfile from '../components/cards/CardChatProfile';
 import InputSendMessage from '../components/inputs/InputSendMessage';
 import {GlobalContext} from '../App';
-import {getDataLocal, storeDataLocal} from '../controllers/localStorage';
+import {getFromStorage, saveToStorage} from '../controllers/localStorage';
 import {MessageType} from '../utils/types';
 import SubTitle from '../components/text/SubTitle';
 import {StyleSheet} from 'react-native';
@@ -48,7 +48,7 @@ const Chat = () => {
   const getChat = useCallback(async () => {
     try {
       if (chatId) {
-        const chatConv: MessageType[] = await getDataLocal(chatId);
+        const chatConv: MessageType[] = await getFromStorage(chatId);
         const chats = chatConv.map(cha => ({...cha, date: new Date(cha.date)}));
         setChat(chats);
       }
@@ -65,7 +65,7 @@ const Chat = () => {
       scrollViewRef.current.scrollToEnd({animated: true});
     }
     if (chatId) {
-      storeDataLocal(chatId, chat);
+      saveToStorage(chatId, chat);
       console.log('Changed Chat Id to ' + chatId);
     }
   }, [chat, chatId]);

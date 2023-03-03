@@ -47,8 +47,10 @@ interface CardConversProps {
 const CardConvers: FC<CardConversProps> = ({name, lastMessage, date, uid}) => {
   const context = useContext(GlobalContext);
   const setContext = useMemo(() => context?.setContext, [context]);
+
   const navigation =
     useNavigation<MaterialBottomTabNavigationProp<RootTabParamList>>();
+
   const habldePress = () => {
     if (setContext) {
       setContext(prev => ({...prev, chatId: uid}));

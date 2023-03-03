@@ -5,19 +5,14 @@ import styled, {useTheme} from 'styled-components/native';
 import MainButton from '../components/buttons/MainButton';
 import Icons from 'react-native-vector-icons/Feather';
 import TextButton from '../components/buttons/TextButton';
-// import {RootTabParamList} from '../navegation';
-// import {useNavigation} from '@react-navigation/core';
 import {NavigationProp, ParamListBase} from '@react-navigation/native';
-// import {GlobalContext} from '../App';
 import Loading from './Loading';
 import {createAuthUser} from '../controllers/firebaseAuth';
-// import {SocialSigninButton} from './LogIn';
-// import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 interface SignUpProps {
   navigation: NavigationProp<ParamListBase>;
 }
-//Views
+
 const Container = styled.View`
   background-color: ${({theme}) => theme.colors.primaryBackground};
   flex: 1;
@@ -36,12 +31,7 @@ const ViewContainer = styled.View`
   justify-content: center;
   align-items: center;
 `;
-// const Divider = styled.View`
-//   border: solid 1px ${({theme}) => theme.colors.secondary};
-//   width: 100%;
-//   margin: 20px;
-// `;
-//Texts
+
 const Title = styled.Text`
   font-size: 40px;
   color: ${({theme}) => theme.colors.primary};
@@ -53,8 +43,6 @@ const SubTitle = styled.Text`
 `;
 
 const SignUp: FC<SignUpProps> = ({navigation}) => {
-  // const context = useContext(GlobalContext);
-  // const setContext = context?.setContext;
   const theme = useTheme();
 
   const [email, setEmail] = useState('');
@@ -65,8 +53,6 @@ const SignUp: FC<SignUpProps> = ({navigation}) => {
 
   const inputPasswordRef = useRef<TextInput>(null);
   const inputPassword2Ref = useRef<TextInput>(null);
-
-  // const navigation = useNavigation<RootTabParamList>();
 
   const handlePress = async () => {
     setProssesing(true);
@@ -80,15 +66,6 @@ const SignUp: FC<SignUpProps> = ({navigation}) => {
         setProssesing(false);
       }
     } catch (error) {
-      // if (error.code === 'auth/email-already-in-use') {
-      //   console.log('That email address is already in use!');
-      //   setProssesing(false);
-      // }
-
-      // if (error.code === 'auth/invalid-email') {
-      //   console.log('That email address is invalid!');
-      //   setProssesing(false);
-      // }
       setProssesing(false);
       console.error(error);
     }
@@ -172,6 +149,8 @@ const SignUp: FC<SignUpProps> = ({navigation}) => {
       )}
 
       <MainButton title={'Register'} handlePress={handlePress} />
+
+      {/* TODO: Implement sign in with sotial */}
 
       {/* <Divider /> */}
 

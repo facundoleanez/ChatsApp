@@ -9,7 +9,6 @@ export const getUserByEmail = async (email: string) => {
       .where('email', '==', email)
       .limit(1)
       .get();
-    console.log(res.docs[0]);
     if (res.docs[0]) {
       const contact: ContactType = {
         uid: res.docs[0].id,

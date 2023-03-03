@@ -12,8 +12,8 @@ import Avatar from '../data-display/Avatar';
 import {GlobalContext} from '../../App';
 import {
   deleteLastMessageContacts,
-  getDataLocal,
-  removeConversationLocal,
+  getFromStorage,
+  removeConversationFromStorage,
 } from '../../controllers/localStorage';
 import {ContactType} from '../../utils/types';
 import Icons from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -62,10 +62,9 @@ const Button = styled.TouchableOpacity`
 `;
 
 const CardChatProfile = () => {
-  //Render states
   const [contact, setContact] = useState<ContactType>();
   const [showMenu, setShowMenu] = useState(false);
-  //Context
+
   const context = useContext(GlobalContext);
   const chatId = useMemo(() => context?.context.chatId, [context]);
   const setContext = useMemo(() => context?.setContext, [context]);
@@ -75,7 +74,7 @@ const CardChatProfile = () => {
 
   const getLocalContacts = useCallback(async () => {
     try {
-      const contactsLocal: ContactType[] = await getDataLocal('contactList');
+      const contactsLocal: ContactType[] = await getFromStorage('contactList');
       const currentContact = contactsLocal.filter(
         cont => cont.uid === chatId,
       )[0];
@@ -92,7 +91,7 @@ const CardChatProfile = () => {
   const handlePressDelete = () => {
     if (chatId && setContext) {
       deleteLastMessageContacts(chatId);
-      removeConversationLocal(chatId);
+      removeConversationFromStorage(chatId);
       navigation.navigate('Conversations');
       setShowMenu(false);
       setContext(prev => ({...prev, chatId: ''}));

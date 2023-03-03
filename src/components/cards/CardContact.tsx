@@ -6,7 +6,7 @@ import {RootTabParamList} from '../../navegation';
 import {MaterialBottomTabNavigationProp} from '@react-navigation/material-bottom-tabs';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import {TouchableOpacity} from 'react-native';
-import {getDataLocal, storeDataLocal} from '../../controllers/localStorage';
+import {getFromStorage, saveToStorage} from '../../controllers/localStorage';
 import {GlobalContext} from '../../App';
 
 const CardPill = styled.TouchableOpacity`
@@ -40,16 +40,17 @@ interface CardContactProps {
 const CardContact: FC<CardContactProps> = ({name, contactId}) => {
   const navigation =
     useNavigation<MaterialBottomTabNavigationProp<RootTabParamList>>();
+
   const theme = useTheme();
-  // Global context
+
   const context = useContext(GlobalContext);
   const setContext = useMemo(() => context?.setContext, [context]);
 
   const handlePressStartConver = async () => {
     try {
-      const already = await getDataLocal(contactId);
-      if (!already && setContext) {
-        await storeDataLocal(contactId, [{date: new Date()}]);
+      const conversation = await getFromStorage(contactId);
+      if (!conversation && setContext) {
+        await saveToStorage(contactId, [{date: new Date()}]);
         setContext(prev => ({...prev, chatId: contactId}));
         navigation.navigate('Chat');
       } else if (setContext) {

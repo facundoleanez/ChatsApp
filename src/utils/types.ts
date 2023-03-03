@@ -33,9 +33,9 @@ export interface UserType {
 }
 
 export enum UsersFieldsType {
-  email = 'email',
-  name = 'name',
-  pic = 'pic,',
-  username = 'username',
-  contacts = 'contacts',
+  Email = 'email',
+  Eame = 'name',
+  Pic = 'pic,',
+  Username = 'username',
+  Contacts = 'contacts',
 }

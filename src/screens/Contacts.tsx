@@ -3,7 +3,7 @@ import {StyleSheet} from 'react-native';
 import styled, {useTheme} from 'styled-components/native';
 import CardContact from '../components/cards/CardContact';
 import SubTitle from '../components/text/SubTitle';
-import {getDataLocal} from '../controllers/localStorage';
+import {getFromStorage} from '../controllers/localStorage';
 import {ContactType} from '../utils/types';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import {Modal, Portal} from 'react-native-paper';
@@ -55,7 +55,7 @@ const Contacts = () => {
 
   const getContacts = async () => {
     try {
-      const cont = await getDataLocal('contactList');
+      const cont = await getFromStorage('contactList');
       if (cont) {
         setContacts(cont);
       }

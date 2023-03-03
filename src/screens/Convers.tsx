@@ -5,7 +5,7 @@ import CardConvers from '../components/cards/CardConversation';
 import {useFocusEffect} from '@react-navigation/native';
 // import TestingStorage from '../utils/TestingStorage';
 import {ContactType, ConversType} from '../utils/types';
-import {getDataLocal} from '../controllers/localStorage';
+import {getFromStorage} from '../controllers/localStorage';
 import {GlobalContext} from '../App';
 import SubTitle from '../components/text/SubTitle';
 
@@ -39,7 +39,7 @@ const Convers = () => {
 
   const getConverList = useCallback(async () => {
     try {
-      const contactList: ContactType[] = await getDataLocal('contactList');
+      const contactList: ContactType[] = await getFromStorage('contactList');
       if (contactList) {
         const converListFiltered: ContactType[] = contactList.filter(
           cont => cont.lastTime,
