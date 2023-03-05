@@ -49,11 +49,10 @@ const CardContact: FC<CardContactProps> = ({name, contactId}) => {
   const handlePressStartConver = async () => {
     try {
       const conversation = await getFromStorage(contactId);
-      if (!conversation && setContext) {
-        await saveToStorage(contactId, [{date: new Date()}]);
-        setContext(prev => ({...prev, chatId: contactId}));
-        navigation.navigate('Chat');
-      } else if (setContext) {
+      if (setContext) {
+        if (!conversation) {
+          await saveToStorage(contactId, [{date: new Date()}]);
+        }
         setContext(prev => ({...prev, chatId: contactId}));
         navigation.navigate('Chat');
       }

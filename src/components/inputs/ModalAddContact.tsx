@@ -80,12 +80,14 @@ const ModalAddContact: FC<ModalAddContactProps> = ({
   };
 
   useEffect(() => {
-    let time = setTimeout(() => {
-      setShowAlert(false);
-    }, 3000);
-    return () => {
-      clearTimeout(time);
-    };
+    if (showAlert) {
+      let time = setTimeout(() => {
+        setShowAlert(false);
+      }, 3000);
+      return () => {
+        clearTimeout(time);
+      };
+    }
   }, [showAlert]);
 
   return (
