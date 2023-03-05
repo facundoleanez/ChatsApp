@@ -13,7 +13,7 @@ import styled from 'styled-components/native';
 import CardChatProfile from '../components/cards/CardChatProfile';
 import InputSendMessage from '../components/inputs/InputSendMessage';
 import {GlobalContext} from '../App';
-import {getData, storeData} from '../controllers/localStorage';
+import {getFromStorage, saveToStorage} from '../controllers/localStorage';
 import {MessageType} from '../utils/types';
 import SubTitle from '../components/text/SubTitle';
 import {StyleSheet} from 'react-native';
@@ -46,10 +46,14 @@ const Chat = () => {
   const chatId = useMemo(() => context?.context.chatId, [context]);
   const scrollViewRef = useRef<ScrollView>(null);
   const getChat = useCallback(async () => {
-    if (chatId) {
-      const chatConv: MessageType[] = await getData(chatId);
-      const chats = chatConv.map(cha => ({...cha, date: new Date(cha.date)}));
-      setChat(chats);
+    try {
+      if (chatId) {
+        const chatConv: MessageType[] = await getFromStorage(chatId);
+        const chats = chatConv.map(cha => ({...cha, date: new Date(cha.date)}));
+        setChat(chats);
+      }
+    } catch (error) {
+      console.log('Location Chat screen, getChat()', error);
     }
   }, [chatId]);
   useEffect(() => {
@@ -61,7 +65,7 @@ const Chat = () => {
       scrollViewRef.current.scrollToEnd({animated: true});
     }
     if (chatId) {
-      storeData(chatId, chat);
+      saveToStorage(chatId, chat);
       console.log('Changed Chat Id to ' + chatId);
     }
   }, [chat, chatId]);

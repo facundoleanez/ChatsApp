@@ -1,49 +1,38 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {ContactType} from '../utils/types';
 
-export const storeData = async (key: string, value: any) => {
+export const saveToStorage = async (key: string, value: any) => {
   try {
     const jsonValue = JSON.stringify(value);
     await AsyncStorage.setItem(key, jsonValue);
-    console.log('storeData() Called with key:' + key + jsonValue);
+    console.log('StoreLocalData() Called with key: ' + key);
   } catch (e) {
+    console.log(e);
     return e;
-    // saving error
-  }
-};
-export const createConv = async (key: string, value: any) => {
-  try {
-    const jsonValue = JSON.stringify(value);
-    const res = await AsyncStorage.setItem(key, jsonValue);
-    return res;
-  } catch (e) {
-    return e;
-    // saving error
   }
 };
 
-export const getData = async (storageKey: string) => {
+export const getFromStorage = async (storageKey: string) => {
   try {
     const jsonValue = await AsyncStorage.getItem(storageKey);
-    console.log(
-      'getData() Called with key:' +
-        storageKey +
-        (jsonValue != null ? JSON.parse(jsonValue) : null),
-    );
+    console.log('GetLocalData() Called with key: ' + storageKey);
     return jsonValue != null ? JSON.parse(jsonValue) : null;
   } catch (e) {
-    return e;
+    console.log(e);
+    return null;
   }
 };
 
-export const removeConversation = async (converKey: string) => {
+export const removeConversationFromStorage = async (converKey: string) => {
   try {
     const res = await AsyncStorage.removeItem(converKey);
-    console.log('removed conversation key:' + converKey + res);
+    return res;
   } catch (e) {
-    return e;
+    console.log(e);
+    return null;
   }
 };
+
 export const getAllKeysConver = async () => {
   let keys: readonly string[] = [];
   try {
@@ -58,14 +47,13 @@ export const clearAll = async () => {
   try {
     await AsyncStorage.clear();
   } catch (e) {
-    // clear error
+    console.log(e);
   }
-
   console.log('Done.');
 };
 
 export const deleteLastMessageContacts = async (uid: string) => {
-  const contacts: ContactType[] = await getData('contacts');
+  const contacts: ContactType[] = await getFromStorage('contacts');
   const newContacts = contacts.map(contact => {
     if (contact.uid === uid) {
       delete contact.lastTime;
@@ -73,5 +61,5 @@ export const deleteLastMessageContacts = async (uid: string) => {
     }
     return contact;
   });
-  storeData('contacts', newContacts);
+  saveToStorage('contacts', newContacts);
 };

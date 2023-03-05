@@ -3,16 +3,14 @@ import {ScrollView, StyleSheet} from 'react-native';
 import styled from 'styled-components/native';
 import CardConvers from '../components/cards/CardConversation';
 import {useFocusEffect} from '@react-navigation/native';
-import TestingStorage from '../utils/TestingStorage';
 import {ContactType, ConversType} from '../utils/types';
-import {getData} from '../controllers/localStorage';
+import {getFromStorage} from '../controllers/localStorage';
 import {GlobalContext} from '../App';
 import SubTitle from '../components/text/SubTitle';
 
 const ContainerConver = styled.View`
   border: 0px solid ${({theme}) => theme.colors.seccoindaryText};
   border-bottom-width: 1px;
-  /* border-top-width: 1px; */
   flex: 1;
 `;
 
@@ -38,31 +36,36 @@ const Convers = () => {
   const chatId = useMemo(() => context?.context.chatId, [context]);
 
   const getConverList = useCallback(async () => {
-    const contactList: ContactType[] = await getData('contacts');
-    if (contactList) {
-      const converListFiltered: ContactType[] = contactList.filter(
-        cont => cont.lastTime,
-      );
-      if (converListFiltered[0] && setContext) {
-        const converList: ConversType[] = converListFiltered.map(cont => ({
-          uid: cont.uid,
-          name: cont.name,
-          pic: cont?.pic,
-          lastMessage: cont.lastTime?.message || '',
-          lastTime: cont.lastTime?.date || '',
-        }));
-        setConvers(
-          converList.sort(
-            (a, b) =>
-              new Date(b.lastTime).getTime() - new Date(a.lastTime).getTime(),
-          ),
+    try {
+      const contactList: ContactType[] = await getFromStorage('contactList');
+      if (contactList) {
+        const converListFiltered: ContactType[] = contactList.filter(
+          cont => cont.lastTime,
         );
-        if (setContext && !chatId) {
-          setContext(prev => ({...prev, chatId: converList[0].uid}));
+        if (converListFiltered[0] && setContext) {
+          const converList: ConversType[] = converListFiltered.map(cont => ({
+            uid: cont.uid,
+            name: cont.name,
+            pic: cont?.pic,
+            lastMessage: cont.lastTime?.message || '',
+            lastTime: cont.lastTime?.date || '',
+          }));
+          setConvers(
+            converList.sort(
+              (a, b) =>
+                new Date(b.lastTime).getTime() - new Date(a.lastTime).getTime(),
+            ),
+          );
+          if (setContext && !chatId) {
+            setContext(prev => ({...prev, chatId: converList[0].uid}));
+          }
         }
+      } else {
+        setConvers([]);
       }
-    } else {
-      setConvers([]);
+    } catch (error) {
+      console.log('Location: Convers screen, getConverList()');
+      console.log(error);
     }
   }, [setContext, chatId]);
 
@@ -89,7 +92,6 @@ const Convers = () => {
         ) : (
           <SubTitle text={'Nothing to show'} />
         )}
-        <TestingStorage />
       </ScrollView>
     </ContainerConver>
   );

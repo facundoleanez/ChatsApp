@@ -1,7 +1,11 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useState, FC} from 'react';
 import {TextInput} from 'react-native-paper';
 import styled, {useTheme} from 'styled-components/native';
+import {addContact} from '../../controllers/actions';
+import Loading from '../../screens/Loading';
+import {ContactType} from '../../utils/types';
 import MainButton from '../buttons/MainButton';
+import Alert from '../text/Alert';
 import SubTitle from '../text/SubTitle';
 
 const ModalContainer = styled.View`
@@ -20,11 +24,20 @@ const FormSection = styled.View`
   margin: 40px;
 `;
 
-const ModalAddContact = () => {
-  //Form States
+interface ModalAddContactProps {
+  setContacts: React.Dispatch<React.SetStateAction<ContactType[]>>;
+  setShowModal: React.Dispatch<React.SetStateAction<boolean>>;
+}
+
+const ModalAddContact: FC<ModalAddContactProps> = ({
+  setContacts,
+  setShowModal,
+}) => {
   const [email, setEmail] = useState('');
   const [username, setUsername] = useState('');
-  //Render States
+
+  const [loading, setLoading] = useState(false);
+  const [showAlert, setShowAlert] = useState(false);
   const [isDisabledEmail, setIsDisabledEmail] = useState(false);
   const [isDisableUsername, setIsDisableUsername] = useState(false);
 
@@ -43,8 +56,43 @@ const ModalAddContact = () => {
     }
   }, [email, username]);
 
+  const handlePressSend = async () => {
+    setLoading(true);
+    try {
+      const newContactAdded = await addContact(email);
+      if (newContactAdded) {
+        setContacts(prev => [...prev, newContactAdded]);
+        setLoading(false);
+        setShowModal(false);
+      } else {
+        setShowAlert(true);
+      }
+    } catch (error) {
+      console.log(
+        'Location: components/inputs/ModalAddContacts handlePressSend()',
+        error,
+      );
+    } finally {
+      setEmail('');
+      setUsername('');
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    if (showAlert) {
+      let time = setTimeout(() => {
+        setShowAlert(false);
+      }, 3000);
+      return () => {
+        clearTimeout(time);
+      };
+    }
+  }, [showAlert]);
+
   return (
     <ModalContainer>
+      {loading && <Loading />}
       <Title>Add a contact</Title>
       <FormSection>
         <TextInput
@@ -86,10 +134,10 @@ const ModalAddContact = () => {
           // onSubmitEditing={handleFocus}
         />
       </FormSection>
-      <MainButton
-        title={'Send request'}
-        handlePress={() => console.log('pressed')}
-      />
+      {showAlert && (
+        <Alert text={'Email or username not found'} type={'danger'} />
+      )}
+      <MainButton title={'Send request'} handlePress={handlePressSend} />
     </ModalContainer>
   );
 };
