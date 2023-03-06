@@ -7,6 +7,7 @@ import {ContactType, ConversType} from '../utils/types';
 import {getFromStorage} from '../controllers/localStorage';
 import {GlobalContext} from '../App';
 import SubTitle from '../components/text/SubTitle';
+import TestingStorage from '../utils/TestingStorage';
 
 const ContainerConver = styled.View`
   border: 0px solid ${({theme}) => theme.colors.seccoindaryText};
@@ -92,6 +93,7 @@ const Convers = () => {
         ) : (
           <SubTitle text={'Nothing to show'} />
         )}
+        <TestingStorage />
       </ScrollView>
     </ContainerConver>
   );

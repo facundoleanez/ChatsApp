@@ -38,4 +38,5 @@ export enum UsersFieldsType {
   Pic = 'pic,',
   Username = 'username',
   Contacts = 'contacts',
+  DeviceToken = 'deviceToken',
 }

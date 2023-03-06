@@ -86,3 +86,26 @@ export const setFieldUser = async (
     return null;
   }
 };
+
+export const deleteOldDeviceToken = async (token: string) => {
+  try {
+    await firestore()
+      .collection('Users')
+      .where('deviceToken', '==', token)
+      .limit(1)
+      .get()
+      .then(querySnapshot => {
+        querySnapshot.forEach(documentSnapshot => {
+          documentSnapshot.ref.update({
+            deviceToken: '',
+          });
+        });
+      });
+    console.log('done');
+  } catch (error) {
+    console.log(
+      'Location: controllers/firebaseFirestore deleteOldDeviceToken()',
+      error,
+    );
+  }
+};

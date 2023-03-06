@@ -7,7 +7,7 @@ import Icons from 'react-native-vector-icons/Feather';
 import TextButton from '../components/buttons/TextButton';
 import {NavigationProp, ParamListBase} from '@react-navigation/native';
 import Loading from './Loading';
-import {createAuthUser} from '../controllers/firebaseAuth';
+import {createAccountWithEmailAndPassword} from '../controllers/actions';
 
 interface SignUpProps {
   navigation: NavigationProp<ParamListBase>;
@@ -58,17 +58,16 @@ const SignUp: FC<SignUpProps> = ({navigation}) => {
     setProssesing(true);
     try {
       if (email && password) {
-        const res = await createAuthUser(email, password);
-        console.log(res);
-        setEmail('');
-        setPassword('');
-        setPassword2('');
+        await createAccountWithEmailAndPassword(email, password);
         setProssesing(false);
       }
     } catch (error) {
       setProssesing(false);
       console.error(error);
     }
+    setEmail('');
+    setPassword('');
+    setPassword2('');
   };
 
   const handleFocus = () => {

@@ -1,12 +1,14 @@
-import {Text, StyleSheet, TouchableOpacity} from 'react-native';
-import React, {useState} from 'react';
-// import imgProfile from '../imgs/profile.png';
+import {Text, StyleSheet, TouchableOpacity, Alert} from 'react-native';
+import React, {useContext, useMemo, useState} from 'react';
 import styled from 'styled-components/native';
 import Avatar from '../components/data-display/Avatar';
 import auth from '@react-native-firebase/auth';
 import {Portal, Modal} from 'react-native-paper';
 import TextButton from '../components/buttons/TextButton';
 import {clearAll} from '../controllers/localStorage';
+import {setFieldUser} from '../controllers/firebaseFirestore';
+import {UsersFieldsType} from '../utils/types';
+import {GlobalContext} from '../App';
 
 interface ContainerProps {
   dark?: boolean;
@@ -61,19 +63,29 @@ const styles = StyleSheet.create({
 
 const TopBar = () => {
   const [visible, setVisible] = useState(false);
-
+  const context = useContext(GlobalContext);
+  const uid = useMemo(() => context?.context.uid, [context]);
   const showModal = () => setVisible(true);
   const hideModal = () => setVisible(false);
   const logOut = () => {
     auth()
       .signOut()
-      .then(() => console.log('User signed out!'));
+      .then(() => {
+        if (uid) {
+          setFieldUser(uid, UsersFieldsType.DeviceToken, '');
+        }
+        console.log('User signed out!');
+      });
     clearAll();
   };
-
+  const handlePress = () => {
+    Alert.alert('hola', 'hola');
+  };
   return (
     <Container>
-      <Text style={styles.sectionTitle}>Chat Assssspp</Text>
+      <TouchableOpacity onPress={handlePress}>
+        <Text style={styles.sectionTitle}>Chat Assssspp</Text>
+      </TouchableOpacity>
       <TouchableOpacity onPress={showModal}>
         <Avatar size={30} />
         <Portal>

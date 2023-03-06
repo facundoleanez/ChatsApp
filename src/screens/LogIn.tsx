@@ -9,6 +9,7 @@ import TextButton from '../components/buttons/TextButton';
 import {NavigationProp, ParamListBase} from '@react-navigation/native';
 import auth from '@react-native-firebase/auth';
 import Loading from './Loading';
+import {getDeviceTokenLog} from '../controllers/actions';
 // import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 interface LogInProps {
@@ -78,8 +79,9 @@ const LogIn: FC<LogInProps> = ({navigation}) => {
     setPassword('');
     auth()
       .signInWithEmailAndPassword(email, password)
-      .then(() => {
+      .then(userCredential => {
         console.log('User account created & signed in!');
+        getDeviceTokenLog(userCredential.user.uid);
         setProssesing(false);
       })
       .catch(error => {

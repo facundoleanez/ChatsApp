@@ -1,7 +1,7 @@
 //This component is just for testing propuse
 
 import {View, Text} from 'react-native';
-import React from 'react';
+// import React, {useContext, useMemo} from 'react';
 import {Button} from 'react-native-paper';
 import {
   getAllKeysConver,
@@ -12,7 +12,9 @@ import {
 } from '../controllers/localStorage';
 import {contactsList} from './constants';
 import styled from 'styled-components/native';
-import {getUserByEmail} from '../controllers/firebaseFirestore';
+// import {getUserByEmail} from '../controllers/firebaseFirestore';
+// import messaging from '@react-native-firebase/messaging';
+// import {GlobalContext} from '../App';
 
 const ButtonTrigger = styled.TouchableOpacity`
   height: 100px;
@@ -25,6 +27,8 @@ const ButtonTrigger = styled.TouchableOpacity`
 `;
 
 const TestingStorage = () => {
+  // const context = useContext(GlobalContext);
+  // const uid = useMemo(() => context?.context.uid, [context]);
   const handlePressSave = () => {
     console.log('saved');
     const algo = saveToStorage('contacts', contactsList);
@@ -50,8 +54,15 @@ const TestingStorage = () => {
     const algo = await clearAll();
     console.log(algo);
   };
-  const handleTriggerPress = () => {
-    getUserByEmail('caca');
+
+  const handleTriggerPress = async () => {
+    // try {
+    //   await messaging().registerDeviceForRemoteMessages();
+    //   const token = await messaging().getToken();
+    //   console.log(token);
+    // } catch (error) {
+    //   console.log(error);
+    // }
   };
   return (
     <View>
