@@ -8,6 +8,7 @@ import {getFromStorage, saveToStorage} from './localStorage';
 import messaging from '@react-native-firebase/messaging';
 import {UsersFieldsType} from '../utils/types';
 import {createAuthUser} from './firebaseAuth';
+import type RemoteMessage from '@react-native-firebase/messaging';
 
 export const createAccountWithEmailAndPassword = async (
   email: string,
@@ -53,5 +54,25 @@ export const getDeviceTokenLog = async (uid: string) => {
     setFieldUser(uid, UsersFieldsType.DeviceToken, token);
   } catch (error) {
     console.log('Location: controllers/actions getDeviceToken()', error);
+  }
+};
+
+export const sendMessageWithToken = async (
+  message: string,
+  recipentToken: string,
+) => {
+  try {
+    const algo = {
+      sendTime: new Date(),
+      data: {
+        message: message,
+      },
+      token: recipentToken,
+    };
+    const response = await messaging().sendMessage(algo);
+    console.log(response);
+    return response;
+  } catch (error) {
+    console.log('Location: controllers/actions sendMessageWithToken()', error);
   }
 };

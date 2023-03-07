@@ -12,6 +12,7 @@ import {
 } from '../controllers/localStorage';
 import {contactsList} from './constants';
 import styled from 'styled-components/native';
+import {sendMessageWithToken} from '../controllers/actions';
 // import {getUserByEmail} from '../controllers/firebaseFirestore';
 // import messaging from '@react-native-firebase/messaging';
 // import {GlobalContext} from '../App';
@@ -56,13 +57,14 @@ const TestingStorage = () => {
   };
 
   const handleTriggerPress = async () => {
-    // try {
-    //   await messaging().registerDeviceForRemoteMessages();
-    //   const token = await messaging().getToken();
-    //   console.log(token);
-    // } catch (error) {
-    //   console.log(error);
-    // }
+    try {
+      sendMessageWithToken(
+        '"fiZxJX4hRcW0CfDOW_xzjq:APA91bEk5MoiHvUSXlACFonu0enFA3snNtc4mK0oDC0bT7riWNiFArV_olv0HbDKdWAVG_MA0-9kh9kGZglgzhWMohHLBslwssNI2PcqiifucHCKnw3Cte98xMmbT55tUCgwwPcSSZqX"',
+        'hola',
+      );
+    } catch (error) {
+      console.log(error);
+    }
   };
   return (
     <View>

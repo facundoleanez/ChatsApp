@@ -7,6 +7,8 @@ import TabNavergator from './navegation';
 import auth, {FirebaseAuthTypes} from '@react-native-firebase/auth';
 import Loading from './screens/Loading';
 import {Provider} from 'react-native-paper';
+import messaging from '@react-native-firebase/messaging';
+import {Alert} from 'react-native';
 
 interface GlobalContextType {
   uid: string;
@@ -44,6 +46,14 @@ const App = () => {
       setContext(prev => ({...prev, uid: ''}));
     }
   }, [user]);
+
+  useEffect(() => {
+    const unsubscribe = messaging().onMessage(async remoteMessage => {
+      Alert.alert('A new FCM message arrived!', JSON.stringify(remoteMessage));
+      console.log('algo llego');
+    });
+    return unsubscribe;
+  }, []);
 
   return (
     <GlobalContext.Provider value={{context, setContext}}>
